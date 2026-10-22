@@ -27,7 +27,7 @@ export function PharmacyFinder() {
       </button>
 
       {state.status === "error" && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
           {ERROR_MESSAGES[state.reason]}
         </p>
       )}

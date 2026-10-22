@@ -12,7 +12,7 @@ export function PharmacyMap({
     <iframe
       title="Map of nearby pharmacies"
       src={buildOsmEmbedUrl(origin, pharmacies)}
-      className="h-64 w-full rounded-lg border border-gray-200"
+      className="h-64 w-full rounded-lg border border-gray-200 dark:border-gray-700"
     />
   );
 }
