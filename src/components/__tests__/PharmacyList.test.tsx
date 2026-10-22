@@ -19,7 +19,7 @@ describe("PharmacyList", () => {
             lon: 24.94,
             distanceMeters: 1800,
             address: "Testikatu 1, 00100 Helsinki",
-            source: "osm",
+            source: "overture",
           },
         ]}
       />,

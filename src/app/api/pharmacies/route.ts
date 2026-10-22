@@ -1,21 +1,15 @@
 import { NextResponse } from "next/server";
-import { TtlCache } from "@/lib/cache";
 import { findNearestPharmacies } from "@/lib/pharmacies";
-import type { PharmacySearchResult } from "@/lib/types";
 
-const CACHE_TTL_MS = 5 * 60 * 1000;
-const cache = new TtlCache<PharmacySearchResult>(CACHE_TTL_MS);
+// Every request has different lat/lon; never let a static-looking GET get
+// cached across coordinates.
+export const dynamic = "force-dynamic";
 
 function parseCoordinate(value: string | null, min: number, max: number): number | null {
   if (value === null) return null;
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed < min || parsed > max) return null;
   return parsed;
-}
-
-/** Rounds to ~111m precision so nearby repeat requests hit the same cache entry. */
-function cacheKey(lat: number, lon: number): string {
-  return `${lat.toFixed(3)},${lon.toFixed(3)}`;
 }
 
 export async function GET(request: Request): Promise<Response> {
@@ -30,20 +24,14 @@ export async function GET(request: Request): Promise<Response> {
     );
   }
 
-  const key = cacheKey(lat, lon);
-  const cached = cache.get(key);
-  if (cached) {
-    return NextResponse.json(cached);
-  }
-
   try {
-    const result = await findNearestPharmacies({ lat, lon });
-    cache.set(key, result);
+    const result = findNearestPharmacies({ lat, lon });
     return NextResponse.json(result);
-  } catch {
+  } catch (error) {
+    console.error("pharmacy lookup failed", error);
     return NextResponse.json(
       { error: "Failed to look up pharmacies right now. Please try again shortly." },
-      { status: 502 },
+      { status: 500 },
     );
   }
 }

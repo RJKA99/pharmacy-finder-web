@@ -90,7 +90,7 @@ describe("PharmacyFinder", () => {
               lon: 24.941,
               distanceMeters: 150,
               address: "Testikatu 1",
-              source: "osm",
+              source: "overture",
             },
           ],
           searchRadiusMeters: 1500,

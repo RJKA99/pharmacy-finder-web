@@ -12,7 +12,7 @@ function makePharmacy(overrides: Partial<Pharmacy>): Pharmacy {
     lon: 24.94,
     distanceMeters: 200,
     address: null,
-    source: "osm",
+    source: "overture",
     ...overrides,
   };
 }
