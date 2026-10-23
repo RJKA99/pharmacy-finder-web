@@ -87,3 +87,27 @@ describe("findNearestPharmacies", () => {
     expect(result.pharmacies).toHaveLength(0);
   });
 });
+
+describe("findPharmacyById", () => {
+  beforeEach(() => {
+    vi.resetModules();
+  });
+
+  it("returns the matching location for a known id", async () => {
+    vi.doMock("@/data/pharmacies.json", () => ({
+      default: [makeLocation({ id: "overture:known", name: "Known Pharmacy" })],
+    }));
+
+    const { findPharmacyById: find } = await import("../pharmacies");
+    expect(find("overture:known")?.name).toBe("Known Pharmacy");
+  });
+
+  it("returns undefined for an unknown id, never a client-supplied destination", async () => {
+    vi.doMock("@/data/pharmacies.json", () => ({
+      default: [makeLocation({ id: "overture:known" })],
+    }));
+
+    const { findPharmacyById: find } = await import("../pharmacies");
+    expect(find("not-a-real-id")).toBeUndefined();
+  });
+});

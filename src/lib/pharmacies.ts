@@ -70,6 +70,13 @@ function searchAtRadius(
     .sort((a, b) => a.distanceMeters - b.distanceMeters);
 }
 
+/** Looks up a pharmacy by id in the bundled dataset - used to constrain the
+ * directions API to known destinations instead of accepting arbitrary
+ * caller-supplied coordinates. */
+export function findPharmacyById(id: string): PharmacyLocation | undefined {
+  return getDedupedDataset().find((location) => location.id === id);
+}
+
 const MIN_RESULTS_BEFORE_WIDENING = 3;
 
 /**
