@@ -3,11 +3,28 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PharmacyFinder } from "../PharmacyFinder";
 
+vi.mock("../PharmacyMap", () => ({
+  PharmacyMap: ({
+    onOriginPick,
+  }: {
+    onOriginPick: (origin: { lat: number; lon: number }) => void;
+  }) => (
+    <button type="button" onClick={() => onOriginPick({ lat: 60.18, lon: 24.95 })}>
+      simulate map click
+    </button>
+  ),
+}));
+
+vi.mock("../AddressSearch", () => ({
+  AddressSearch: ({ onPick }: { onPick: (origin: { lat: number; lon: number }) => void }) => (
+    <button type="button" onClick={() => onPick({ lat: 60.171, lon: 24.941 })}>
+      simulate address pick
+    </button>
+  ),
+}));
+
 function mockGeolocation(
-  implementation: (
-    success: PositionCallback,
-    error?: PositionErrorCallback,
-  ) => void,
+  implementation: (success: PositionCallback, error?: PositionErrorCallback) => void,
 ) {
   Object.defineProperty(global.navigator, "geolocation", {
     configurable: true,
@@ -36,6 +53,16 @@ function samplePosition(): GeolocationPosition {
   } as GeolocationPosition;
 }
 
+const SAMPLE_PHARMACY = {
+  id: "overture:1",
+  name: "Testiapteekki",
+  lat: 60.171,
+  lon: 24.941,
+  distanceMeters: 150,
+  address: "Testikatu 1",
+  source: "overture",
+};
+
 describe("PharmacyFinder", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
@@ -49,7 +76,7 @@ describe("PharmacyFinder", () => {
     });
 
     render(<PharmacyFinder />);
-    await userEvent.click(screen.getByRole("button", { name: /find nearest pharmacy/i }));
+    await userEvent.click(screen.getByRole("button", { name: /use my location/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/doesn't support location/i);
   });
@@ -60,39 +87,18 @@ describe("PharmacyFinder", () => {
     });
 
     render(<PharmacyFinder />);
-    await userEvent.click(screen.getByRole("button", { name: /find nearest pharmacy/i }));
+    await userEvent.click(screen.getByRole("button", { name: /use my location/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/permission was denied/i);
   });
 
-  it("shows a network error when the API call fails", async () => {
-    mockGeolocation((success) => success(samplePosition()));
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
-
-    render(<PharmacyFinder />);
-    await userEvent.click(screen.getByRole("button", { name: /find nearest pharmacy/i }));
-
-    expect(await screen.findByRole("alert")).toHaveTextContent(/couldn't reach/i);
-  });
-
-  it("renders the pharmacy list and map on success", async () => {
-    mockGeolocation((success) => success(samplePosition()));
+  it("searches and renders the pharmacy list after picking an address", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn().mockResolvedValue({
         ok: true,
         json: async () => ({
-          pharmacies: [
-            {
-              id: "osm:node/1",
-              name: "Testiapteekki",
-              lat: 60.171,
-              lon: 24.941,
-              distanceMeters: 150,
-              address: "Testikatu 1",
-              source: "overture",
-            },
-          ],
+          pharmacies: [SAMPLE_PHARMACY],
           searchRadiusMeters: 1500,
           generatedAt: new Date().toISOString(),
         }),
@@ -100,9 +106,71 @@ describe("PharmacyFinder", () => {
     );
 
     render(<PharmacyFinder />);
-    await userEvent.click(screen.getByRole("button", { name: /find nearest pharmacy/i }));
+    await userEvent.click(screen.getByRole("button", { name: /simulate address pick/i }));
 
     await waitFor(() => expect(screen.getByText("Testiapteekki")).toBeInTheDocument());
-    expect(screen.getByTitle(/map of nearby pharmacies/i)).toBeInTheDocument();
+  });
+
+  it("searches after a simulated map click", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          pharmacies: [SAMPLE_PHARMACY],
+          searchRadiusMeters: 1500,
+          generatedAt: new Date().toISOString(),
+        }),
+      }),
+    );
+
+    render(<PharmacyFinder />);
+    await userEvent.click(screen.getByRole("button", { name: /simulate map click/i }));
+
+    await waitFor(() => expect(screen.getByText("Testiapteekki")).toBeInTheDocument());
+  });
+
+  it("fetches and displays directions when a pharmacy's Directions button is clicked", async () => {
+    mockGeolocation((success) => success(samplePosition()));
+    const fetchMock = vi.fn((url: string) => {
+      if (url.includes("/api/pharmacies")) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            pharmacies: [SAMPLE_PHARMACY],
+            searchRadiusMeters: 1500,
+            generatedAt: new Date().toISOString(),
+          }),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          coordinates: [[60.17, 24.94], [60.171, 24.941]],
+          distanceMeters: 150,
+          durationSeconds: 120,
+          steps: [{ instruction: "Head north", distanceMeters: 150 }],
+        }),
+      });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<PharmacyFinder />);
+    await userEvent.click(screen.getByRole("button", { name: /use my location/i }));
+    await waitFor(() => expect(screen.getByText("Testiapteekki")).toBeInTheDocument());
+
+    await userEvent.click(screen.getByRole("button", { name: /^directions$/i }));
+
+    expect(await screen.findByText(/walking directions to testiapteekki/i)).toBeInTheDocument();
+    expect(screen.getByText(/head north/i)).toBeInTheDocument();
+  });
+
+  it("shows a network error when the pharmacy API call fails", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: false }));
+
+    render(<PharmacyFinder />);
+    await userEvent.click(screen.getByRole("button", { name: /simulate address pick/i }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(/couldn't reach the pharmacy lookup/i);
   });
 });

@@ -5,3 +5,9 @@ export function formatDistance(meters: number): string {
   }
   return `${(meters / 1000).toFixed(1)} km`;
 }
+
+/** Formats a walking duration in seconds as "8 min" (rounded up, minimum 1 min). */
+export function formatDuration(seconds: number): string {
+  const minutes = Math.max(1, Math.round(seconds / 60));
+  return `${minutes} min`;
+}

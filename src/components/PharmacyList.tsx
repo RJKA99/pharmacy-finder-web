@@ -1,7 +1,15 @@
 import { formatDistance } from "@/lib/format";
 import type { Pharmacy } from "@/lib/types";
 
-export function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] }) {
+export function PharmacyList({
+  pharmacies,
+  onDirections,
+  loadingDirectionsId,
+}: {
+  pharmacies: Pharmacy[];
+  onDirections: (pharmacy: Pharmacy) => void;
+  loadingDirectionsId: string | null;
+}) {
   if (pharmacies.length === 0) {
     return (
       <p className="text-sm text-gray-600 dark:text-gray-400" role="status">
@@ -20,9 +28,19 @@ export function PharmacyList({ pharmacies }: { pharmacies: Pharmacy[] }) {
               <p className="text-sm text-gray-500 dark:text-gray-400">{pharmacy.address}</p>
             )}
           </div>
-          <span className="shrink-0 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-            {formatDistance(pharmacy.distanceMeters)}
-          </span>
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+              {formatDistance(pharmacy.distanceMeters)}
+            </span>
+            <button
+              type="button"
+              onClick={() => onDirections(pharmacy)}
+              disabled={loadingDirectionsId === pharmacy.id}
+              className="rounded-md border border-emerald-600 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-50 disabled:opacity-60 dark:border-emerald-700 dark:text-emerald-400 dark:hover:bg-emerald-950"
+            >
+              {loadingDirectionsId === pharmacy.id ? "Loading…" : "Directions"}
+            </button>
+          </div>
         </li>
       ))}
     </ul>
