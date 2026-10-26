@@ -54,4 +54,19 @@ describe("PharmacyList", () => {
 
     expect(screen.getByRole("button", { name: /loading/i })).toBeDisabled();
   });
+
+  it("highlights the active pharmacy's row", () => {
+    const other = { ...PHARMACY, id: "overture:2", name: "Toinen apteekki" };
+    render(
+      <PharmacyList
+        pharmacies={[PHARMACY, other]}
+        onDirections={vi.fn()}
+        loadingDirectionsId={null}
+        activePharmacyId={PHARMACY.id}
+      />,
+    );
+
+    expect(screen.getByText("Testiapteekki").closest("li")).toHaveClass("bg-emerald-50");
+    expect(screen.getByText("Toinen apteekki").closest("li")).not.toHaveClass("bg-emerald-50");
+  });
 });

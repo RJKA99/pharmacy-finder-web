@@ -5,10 +5,12 @@ export function PharmacyList({
   pharmacies,
   onDirections,
   loadingDirectionsId,
+  activePharmacyId,
 }: {
   pharmacies: Pharmacy[];
   onDirections: (pharmacy: Pharmacy) => void;
   loadingDirectionsId: string | null;
+  activePharmacyId?: string | null;
 }) {
   if (pharmacies.length === 0) {
     return (
@@ -21,7 +23,12 @@ export function PharmacyList({
   return (
     <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200 dark:divide-gray-700 dark:border-gray-700">
       {pharmacies.map((pharmacy) => (
-        <li key={pharmacy.id} className="flex items-center justify-between gap-4 p-4">
+        <li
+          key={pharmacy.id}
+          className={`flex items-center justify-between gap-4 p-4 ${
+            activePharmacyId === pharmacy.id ? "bg-emerald-50 dark:bg-emerald-950" : ""
+          }`}
+        >
           <div>
             <p className="font-medium text-gray-900 dark:text-gray-100">{pharmacy.name}</p>
             {pharmacy.address && (
