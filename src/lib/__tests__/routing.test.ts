@@ -1,22 +1,30 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { GeocodeResult, RouteResult } from "../types";
+import type { GeocodeResult, RouteResult, TravelMode } from "../types";
 
 const orsGeocode = vi.fn<(query: string) => Promise<GeocodeResult[]>>();
-const orsFetchWalkingRoute = vi.fn<
-  (start: { lat: number; lon: number }, end: { lat: number; lon: number }) => Promise<RouteResult>
+const orsFetchRoute = vi.fn<
+  (
+    start: { lat: number; lon: number },
+    end: { lat: number; lon: number },
+    mode: TravelMode,
+  ) => Promise<RouteResult>
 >();
 const graphhopperGeocode = vi.fn<(query: string) => Promise<GeocodeResult[]>>();
-const graphhopperFetchWalkingRoute = vi.fn<
-  (start: { lat: number; lon: number }, end: { lat: number; lon: number }) => Promise<RouteResult>
+const graphhopperFetchRoute = vi.fn<
+  (
+    start: { lat: number; lon: number },
+    end: { lat: number; lon: number },
+    mode: TravelMode,
+  ) => Promise<RouteResult>
 >();
 
 vi.mock("../providers/ors", () => ({
   geocode: orsGeocode,
-  fetchWalkingRoute: orsFetchWalkingRoute,
+  fetchRoute: orsFetchRoute,
 }));
 vi.mock("../providers/graphhopper", () => ({
   geocode: graphhopperGeocode,
-  fetchWalkingRoute: graphhopperFetchWalkingRoute,
+  fetchRoute: graphhopperFetchRoute,
 }));
 
 const SAMPLE_RESULTS: GeocodeResult[] = [{ label: "Testikatu 1", lat: 60.17, lon: 24.94 }];
@@ -31,9 +39,9 @@ describe("routing fallback", () => {
   beforeEach(() => {
     vi.resetModules();
     orsGeocode.mockReset();
-    orsFetchWalkingRoute.mockReset();
+    orsFetchRoute.mockReset();
     graphhopperGeocode.mockReset();
-    graphhopperFetchWalkingRoute.mockReset();
+    graphhopperFetchRoute.mockReset();
   });
 
   it("uses ORS when it succeeds, without calling GraphHopper", async () => {
@@ -56,12 +64,25 @@ describe("routing fallback", () => {
     expect(results).toBe(SAMPLE_RESULTS);
   });
 
-  it("falls back to GraphHopper when ORS routing fails", async () => {
-    orsFetchWalkingRoute.mockRejectedValue(new Error("ORS directions responded 403"));
-    graphhopperFetchWalkingRoute.mockResolvedValue(SAMPLE_ROUTE);
-    const { fetchWalkingRoute } = await import("../routing");
+  it("passes the travel mode through to the provider", async () => {
+    orsFetchRoute.mockResolvedValue(SAMPLE_ROUTE);
+    const { fetchRoute } = await import("../routing");
 
-    const route = await fetchWalkingRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.18, lon: 24.95 });
+    await fetchRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.18, lon: 24.95 }, "bike");
+
+    expect(orsFetchRoute).toHaveBeenCalledWith(
+      { lat: 60.17, lon: 24.94 },
+      { lat: 60.18, lon: 24.95 },
+      "bike",
+    );
+  });
+
+  it("falls back to GraphHopper when ORS routing fails", async () => {
+    orsFetchRoute.mockRejectedValue(new Error("ORS directions responded 403"));
+    graphhopperFetchRoute.mockResolvedValue(SAMPLE_ROUTE);
+    const { fetchRoute } = await import("../routing");
+
+    const route = await fetchRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.18, lon: 24.95 }, "foot");
 
     expect(route).toBe(SAMPLE_ROUTE);
   });

@@ -5,7 +5,7 @@
 
 import * as graphhopper from "./providers/graphhopper";
 import * as ors from "./providers/ors";
-import type { GeocodeResult, RouteResult } from "./types";
+import type { GeocodeResult, RouteResult, TravelMode } from "./types";
 
 async function withFallback<T>(
   label: string,
@@ -31,12 +31,13 @@ export function geocode(query: string): Promise<GeocodeResult[]> {
   ]);
 }
 
-export function fetchWalkingRoute(
+export function fetchRoute(
   start: { lat: number; lon: number },
   end: { lat: number; lon: number },
+  mode: TravelMode,
 ): Promise<RouteResult> {
-  return withFallback("routing", [
-    () => ors.fetchWalkingRoute(start, end),
-    () => graphhopper.fetchWalkingRoute(start, end),
+  return withFallback(`routing (${mode})`, [
+    () => ors.fetchRoute(start, end, mode),
+    () => graphhopper.fetchRoute(start, end, mode),
   ]);
 }

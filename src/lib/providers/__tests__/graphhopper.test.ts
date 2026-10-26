@@ -118,13 +118,29 @@ describe("GraphHopper provider", () => {
       }),
     );
 
-    const { fetchWalkingRoute } = await import("../graphhopper");
-    const route = await fetchWalkingRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.171, lon: 24.941 });
+    const { fetchRoute } = await import("../graphhopper");
+    const route = await fetchRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.171, lon: 24.941 }, "foot");
 
     expect(route.coordinates).toEqual([[60.17, 24.94], [60.171, 24.941]]);
     expect(route.distanceMeters).toBe(250);
     expect(route.durationSeconds).toBe(180);
     expect(route.steps).toEqual([{ instruction: "Head north", distanceMeters: 250 }]);
+  });
+
+  it("requests the correct GraphHopper profile for each travel mode", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        paths: [{ distance: 100, time: 60000, points: { coordinates: [] }, instructions: [] }],
+      }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const { fetchRoute } = await import("../graphhopper");
+    await fetchRoute({ lat: 60.17, lon: 24.94 }, { lat: 60.171, lon: 24.941 }, "car");
+
+    const requestedUrl = new URL(fetchMock.mock.calls[0][0] as string);
+    expect(requestedUrl.searchParams.get("profile")).toBe("car");
   });
 
   it("throws when the API key env var is missing, without making a request", async () => {

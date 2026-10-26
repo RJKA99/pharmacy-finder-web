@@ -1,21 +1,44 @@
 import { NextResponse } from "next/server";
 import { haversineDistanceMeters } from "@/lib/geo";
+import { isOpenAt } from "@/lib/openingHours";
 import { findPharmacyById } from "@/lib/pharmacies";
-import { fetchWalkingRoute } from "@/lib/routing";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { fetchRoute } from "@/lib/routing";
+import type { DirectionsModeResult, DirectionsResult, TravelMode } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-// A walking route this long is never a real request - it's a slow, timeout-
-// prone call to the routing provider (and, during an outage, a wasted
-// attempt against both providers' quota) for a route no one would walk.
-const MAX_WALKING_DISTANCE_METERS = 100_000;
+const TRAVEL_MODES: TravelMode[] = ["foot", "bike", "car"];
+
+// A route this long is never a real request - it's a slow, timeout-prone
+// call to the routing providers (and, during an outage, a wasted attempt
+// against both providers' quota) for a trip nothing in this app's scope
+// would actually make. 300km comfortably covers rural Finland by car.
+const MAX_DIRECTIONS_DISTANCE_METERS = 300_000;
 
 function parseCoordinate(value: string | null, min: number, max: number): number | null {
   if (value === null) return null;
   const parsed = Number(value);
   if (!Number.isFinite(parsed) || parsed < min || parsed > max) return null;
   return parsed;
+}
+
+async function fetchModeResult(
+  origin: { lat: number; lon: number },
+  pharmacy: { lat: number; lon: number; openingHours: string | null },
+  mode: TravelMode,
+): Promise<DirectionsModeResult | null> {
+  try {
+    const route = await fetchRoute(origin, pharmacy, mode);
+    const arrivalTime = new Date(Date.now() + route.durationSeconds * 1000);
+    return {
+      ...route,
+      isOpenOnArrival: isOpenAt(pharmacy.openingHours, pharmacy, arrivalTime),
+    };
+  } catch (error) {
+    console.error(`directions lookup failed (${mode})`, error);
+    return null;
+  }
 }
 
 export async function GET(request: Request): Promise<Response> {
@@ -43,24 +66,31 @@ export async function GET(request: Request): Promise<Response> {
     return NextResponse.json({ error: "Unknown pharmacyId" }, { status: 404 });
   }
 
-  const distanceMeters = haversineDistanceMeters({ lat, lon }, pharmacy);
-  if (distanceMeters > MAX_WALKING_DISTANCE_METERS) {
+  const origin = { lat, lon };
+  const distanceMeters = haversineDistanceMeters(origin, pharmacy);
+  if (distanceMeters > MAX_DIRECTIONS_DISTANCE_METERS) {
     return NextResponse.json(
       {
-        error: `That pharmacy is too far away (${Math.round(distanceMeters / 1000)}km) to get walking directions.`,
+        error: `That pharmacy is too far away (${Math.round(distanceMeters / 1000)}km) to get directions.`,
       },
       { status: 400 },
     );
   }
 
-  try {
-    const route = await fetchWalkingRoute({ lat, lon }, pharmacy);
-    return NextResponse.json(route);
-  } catch (error) {
-    console.error("directions lookup failed", error);
+  const results = await Promise.all(
+    TRAVEL_MODES.map((mode) => fetchModeResult(origin, pharmacy, mode)),
+  );
+
+  const directions = Object.fromEntries(
+    TRAVEL_MODES.map((mode, index) => [mode, results[index]]),
+  ) as DirectionsResult;
+
+  if (TRAVEL_MODES.every((mode) => directions[mode] === null)) {
     return NextResponse.json(
       { error: "Could not calculate directions right now. Please try again shortly." },
       { status: 502 },
     );
   }
+
+  return NextResponse.json(directions);
 }

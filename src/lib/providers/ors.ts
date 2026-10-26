@@ -1,10 +1,16 @@
 // Server-only: never import this from a "use client" component. The API key
 // must never reach the browser bundle - see docs/adr/0002-routing-and-security.md.
 
-import type { GeocodeResult, RouteResult, RouteStep } from "../types";
+import type { GeocodeResult, RouteResult, RouteStep, TravelMode } from "../types";
 
 const ORS_BASE_URL = "https://api.openrouteservice.org";
 const REQUEST_TIMEOUT_MS = 8_000;
+
+const ORS_PROFILE: Record<TravelMode, string> = {
+  foot: "foot-walking",
+  bike: "cycling-regular",
+  car: "driving-car",
+};
 
 function getApiKey(): string {
   const key = process.env.ORS_API_KEY;
@@ -65,12 +71,13 @@ interface OrsDirectionsResponse {
   features: OrsDirectionsFeature[];
 }
 
-/** Fetches a walking route and turn-by-turn steps between two points. */
-export async function fetchWalkingRoute(
+/** Fetches a route and turn-by-turn steps between two points for a given travel mode. */
+export async function fetchRoute(
   start: { lat: number; lon: number },
   end: { lat: number; lon: number },
+  mode: TravelMode,
 ): Promise<RouteResult> {
-  const response = await fetch(`${ORS_BASE_URL}/v2/directions/foot-walking/geojson`, {
+  const response = await fetch(`${ORS_BASE_URL}/v2/directions/${ORS_PROFILE[mode]}/geojson`, {
     method: "POST",
     headers: {
       Authorization: getApiKey(),
@@ -86,7 +93,7 @@ export async function fetchWalkingRoute(
   });
 
   if (!response.ok) {
-    throw new Error(`ORS directions responded ${response.status}`);
+    throw new Error(`ORS directions (${mode}) responded ${response.status}`);
   }
 
   const data = (await response.json()) as OrsDirectionsResponse;

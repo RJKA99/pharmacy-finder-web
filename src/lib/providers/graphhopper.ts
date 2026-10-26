@@ -4,10 +4,16 @@
 // Fallback provider for src/lib/routing.ts, used only when OpenRouteService
 // fails - see docs/adr/0003-routing-provider-fallback.md for why.
 
-import type { GeocodeResult, RouteResult, RouteStep } from "../types";
+import type { GeocodeResult, RouteResult, RouteStep, TravelMode } from "../types";
 
 const GRAPHHOPPER_BASE_URL = "https://graphhopper.com/api/1";
 const REQUEST_TIMEOUT_MS = 8_000;
+
+const GRAPHHOPPER_PROFILE: Record<TravelMode, string> = {
+  foot: "foot",
+  bike: "bike",
+  car: "car",
+};
 
 function getApiKey(): string {
   const key = process.env.GRAPHHOPPER_API_KEY;
@@ -83,23 +89,24 @@ interface GraphHopperRouteResponse {
   paths: GraphHopperPath[];
 }
 
-/** Fetches a walking route and turn-by-turn steps between two points. */
-export async function fetchWalkingRoute(
+/** Fetches a route and turn-by-turn steps between two points for a given travel mode. */
+export async function fetchRoute(
   start: { lat: number; lon: number },
   end: { lat: number; lon: number },
+  mode: TravelMode,
 ): Promise<RouteResult> {
   const url = new URL(`${GRAPHHOPPER_BASE_URL}/route`);
   url.searchParams.set("key", getApiKey());
   url.searchParams.append("point", `${start.lat},${start.lon}`);
   url.searchParams.append("point", `${end.lat},${end.lon}`);
-  url.searchParams.set("profile", "foot");
+  url.searchParams.set("profile", GRAPHHOPPER_PROFILE[mode]);
   url.searchParams.set("points_encoded", "false");
   url.searchParams.set("instructions", "true");
   url.searchParams.set("locale", "en");
 
   const response = await fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
   if (!response.ok) {
-    throw new Error(`GraphHopper route responded ${response.status}`);
+    throw new Error(`GraphHopper route (${mode}) responded ${response.status}`);
   }
 
   const data = (await response.json()) as GraphHopperRouteResponse;
