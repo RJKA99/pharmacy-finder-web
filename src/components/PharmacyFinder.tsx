@@ -16,8 +16,15 @@ const GEOLOCATION_ERROR_MESSAGES: Record<GeolocationErrorReason, string> = {
   "position-unavailable": "We couldn't determine your location. Search for an address or click the map instead.",
 };
 
+/** Above this, "nearest" is far enough that it's worth explaining why. */
+const LONG_DISTANCE_NOTE_METERS = 30_000;
+
 export function PharmacyFinder() {
   const [origin, setOrigin] = useState<{ lat: number; lon: number } | null>(null);
+  // Bumped only when the origin changes via GPS or the map - not via
+  // AddressSearch's own pick - to force it to remount and clear its stale
+  // query text instead of showing an address that no longer matches.
+  const [addressSearchResetKey, setAddressSearchResetKey] = useState(0);
   const { state: searchState, search } = usePharmacySearch();
   const { error: geoError, requestLocation } = useGeolocation();
   const { state: directionsState, fetchDirections, clear: clearDirections } = useDirections();
@@ -25,14 +32,24 @@ export function PharmacyFinder() {
   const pharmacies: Pharmacy[] =
     searchState.status === "success" ? searchState.result.pharmacies : [];
 
+  const activePharmacyId =
+    directionsState.status === "loading" || directionsState.status === "loaded"
+      ? directionsState.pharmacyId
+      : null;
+
   function handleOriginChange(nextOrigin: { lat: number; lon: number }) {
     setOrigin(nextOrigin);
     clearDirections();
     search(nextOrigin);
   }
 
+  function handleExternalOriginChange(nextOrigin: { lat: number; lon: number }) {
+    setAddressSearchResetKey((key) => key + 1);
+    handleOriginChange(nextOrigin);
+  }
+
   function handleUseMyLocation() {
-    requestLocation(handleOriginChange);
+    requestLocation(handleExternalOriginChange);
   }
 
   function handleDirections(pharmacy: Pharmacy) {
@@ -42,15 +59,13 @@ export function PharmacyFinder() {
 
   const isSearching = searchState.status === "loading";
   const activePharmacy =
-    directionsState.status === "loaded" || directionsState.status === "loading"
-      ? pharmacies.find((pharmacy) => pharmacy.id === directionsState.pharmacyId)
-      : undefined;
+    activePharmacyId !== null ? pharmacies.find((pharmacy) => pharmacy.id === activePharmacyId) : undefined;
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
         <div className="flex-1">
-          <AddressSearch onPick={handleOriginChange} />
+          <AddressSearch key={addressSearchResetKey} onPick={handleOriginChange} />
         </div>
         <button
           type="button"
@@ -77,8 +92,13 @@ export function PharmacyFinder() {
       <PharmacyMap
         origin={origin}
         pharmacies={pharmacies}
+        activePharmacyId={activePharmacyId}
         routeCoordinates={directionsState.status === "loaded" ? directionsState.route.coordinates : undefined}
-        onOriginPick={handleOriginChange}
+        onOriginPick={handleExternalOriginChange}
+        onSelectPharmacy={(pharmacyId) => {
+          const pharmacy = pharmacies.find((candidate) => candidate.id === pharmacyId);
+          if (pharmacy) handleDirections(pharmacy);
+        }}
       />
 
       {directionsState.status === "loaded" && activePharmacy && (
@@ -96,11 +116,20 @@ export function PharmacyFinder() {
       )}
 
       {origin && searchState.status === "success" && (
-        <PharmacyList
-          pharmacies={pharmacies}
-          onDirections={handleDirections}
-          loadingDirectionsId={directionsState.status === "loading" ? directionsState.pharmacyId : null}
-        />
+        <>
+          {searchState.result.searchRadiusMeters > LONG_DISTANCE_NOTE_METERS && pharmacies.length > 0 && (
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              You&apos;re far from most pharmacies, so these are the nearest ones available, however far
+              away.
+            </p>
+          )}
+          <PharmacyList
+            pharmacies={pharmacies}
+            onDirections={handleDirections}
+            loadingDirectionsId={directionsState.status === "loading" ? directionsState.pharmacyId : null}
+            activePharmacyId={activePharmacyId}
+          />
+        </>
       )}
     </div>
   );
