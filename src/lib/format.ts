@@ -11,3 +11,16 @@ export function formatDuration(seconds: number): string {
   const minutes = Math.max(1, Math.round(seconds / 60));
   return `${minutes} min`;
 }
+
+const HTML_ESCAPES: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+/** Escapes text for safe interpolation into an HTML string (e.g. a Leaflet popup). */
+export function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => HTML_ESCAPES[character]);
+}

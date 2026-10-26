@@ -3,14 +3,17 @@
 import "leaflet/dist/leaflet.css";
 import { useEffect, useRef } from "react";
 import type * as Leaflet from "leaflet";
+import { escapeHtml } from "@/lib/format";
 import type { Pharmacy } from "@/lib/types";
 
 interface PharmacyMapProps {
   /** The chosen starting point, or null before the user has picked one. */
   origin: { lat: number; lon: number } | null;
   pharmacies: Pharmacy[];
+  activePharmacyId?: string | null;
   routeCoordinates?: [number, number][];
   onOriginPick: (origin: { lat: number; lon: number }) => void;
+  onSelectPharmacy: (pharmacyId: string) => void;
 }
 
 /** Shown before the user has picked a starting point - roughly centers Finland. */
@@ -26,16 +29,48 @@ const ORIGIN_MARKER_STYLE = {
   fillOpacity: 1,
 };
 
-export function PharmacyMap({ origin, pharmacies, routeCoordinates, onOriginPick }: PharmacyMapProps) {
+const ACTIVE_PHARMACY_MARKER_STYLE = {
+  radius: 10,
+  color: "#9a3412",
+  weight: 2,
+  fillColor: "#f97316",
+  fillOpacity: 1,
+};
+
+const DIRECTIONS_BUTTON_CLASS = "pharmacy-popup-directions";
+
+function buildPopupHtml(pharmacy: Pharmacy): string {
+  return `
+    <div class="text-sm">
+      <p class="font-medium text-gray-900">${escapeHtml(pharmacy.name)}</p>
+      <button type="button" class="${DIRECTIONS_BUTTON_CLASS} mt-2 rounded-md border border-emerald-600 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-50" data-pharmacy-id="${escapeHtml(pharmacy.id)}">
+        Directions
+      </button>
+    </div>
+  `;
+}
+
+export function PharmacyMap({
+  origin,
+  pharmacies,
+  activePharmacyId = null,
+  routeCoordinates,
+  onOriginPick,
+  onSelectPharmacy,
+}: PharmacyMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Leaflet.Map | null>(null);
   const originMarkerRef = useRef<Leaflet.CircleMarker | null>(null);
   const pharmacyLayerRef = useRef<Leaflet.LayerGroup | null>(null);
   const routeLayerRef = useRef<Leaflet.Polyline | null>(null);
   const onOriginPickRef = useRef(onOriginPick);
+  const onSelectPharmacyRef = useRef(onSelectPharmacy);
   useEffect(() => {
     onOriginPickRef.current = onOriginPick;
   }, [onOriginPick]);
+  useEffect(() => {
+    onSelectPharmacyRef.current = onSelectPharmacy;
+  }, [onSelectPharmacy]);
 
   // Initialize the map once. Leaflet touches `window` at import time, so it
   // must only ever be loaded inside an effect (client-only), never at module
@@ -65,6 +100,14 @@ export function PharmacyMap({ origin, pharmacies, routeCoordinates, onOriginPick
       map.on("click", (event: Leaflet.LeafletMouseEvent) => {
         onOriginPickRef.current({ lat: event.latlng.lat, lon: event.latlng.lng });
       });
+
+      // Delegated listener: popup content is raw HTML (not React), so its
+      // "Directions" button is wired up this way instead of a JSX handler.
+      map.getContainer().addEventListener("click", (event) => {
+        const button = (event.target as HTMLElement).closest(`.${DIRECTIONS_BUTTON_CLASS}`);
+        const pharmacyId = button instanceof HTMLElement ? button.dataset.pharmacyId : undefined;
+        if (pharmacyId) onSelectPharmacyRef.current(pharmacyId);
+      });
     });
 
     return () => {
@@ -91,17 +134,22 @@ export function PharmacyMap({ origin, pharmacies, routeCoordinates, onOriginPick
     });
   }, [origin]);
 
-  // Redraw pharmacy markers when the result list changes.
+  // Redraw pharmacy markers when the result list or the active pharmacy
+  // (highlighted in a different color) changes.
   useEffect(() => {
     const layer = pharmacyLayerRef.current;
     if (!layer) return;
     import("leaflet").then((L) => {
       layer.clearLayers();
       for (const pharmacy of pharmacies) {
-        L.marker([pharmacy.lat, pharmacy.lon]).bindPopup(pharmacy.name).addTo(layer);
+        const marker =
+          pharmacy.id === activePharmacyId
+            ? L.circleMarker([pharmacy.lat, pharmacy.lon], ACTIVE_PHARMACY_MARKER_STYLE)
+            : L.marker([pharmacy.lat, pharmacy.lon]);
+        marker.bindPopup(buildPopupHtml(pharmacy)).addTo(layer);
       }
     });
-  }, [pharmacies]);
+  }, [pharmacies, activePharmacyId]);
 
   // Draw (or clear) the walking-directions polyline.
   useEffect(() => {
