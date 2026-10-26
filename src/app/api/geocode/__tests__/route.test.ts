@@ -4,7 +4,7 @@ import type { GeocodeResult } from "@/lib/types";
 const geocode = vi.fn<(query: string) => Promise<GeocodeResult[]>>();
 const checkRateLimit = vi.fn<(request: Request) => Response | null>();
 
-vi.mock("@/lib/ors", () => ({ geocode }));
+vi.mock("@/lib/routing", () => ({ geocode }));
 vi.mock("@/lib/rateLimit", () => ({ checkRateLimit }));
 
 describe("GET /api/geocode", () => {
@@ -41,7 +41,7 @@ describe("GET /api/geocode", () => {
   });
 
   it("returns 502 when the upstream geocoder fails", async () => {
-    geocode.mockRejectedValue(new Error("ORS down"));
+    geocode.mockRejectedValue(new Error("all providers down"));
     const { GET } = await import("../route");
 
     const response = await GET(new Request("http://localhost/api/geocode?q=Mannerheimintie"));

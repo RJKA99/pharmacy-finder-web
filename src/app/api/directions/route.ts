@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchWalkingRoute } from "@/lib/ors";
 import { findPharmacyById } from "@/lib/pharmacies";
+import { fetchWalkingRoute } from "@/lib/routing";
 import { checkRateLimit } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +30,8 @@ export async function GET(request: Request): Promise<Response> {
 
   // Destination is always looked up server-side from our own dataset, never
   // taken directly from the caller - this proxy must not become a free,
-  // unrestricted relay for arbitrary ORS directions requests.
+  // unrestricted relay for arbitrary directions requests against either
+  // routing provider's key.
   const pharmacy = findPharmacyById(pharmacyId);
   if (!pharmacy) {
     return NextResponse.json({ error: "Unknown pharmacyId" }, { status: 404 });

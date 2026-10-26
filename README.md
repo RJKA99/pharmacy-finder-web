@@ -23,10 +23,12 @@ walking directions to any of them.
    [`docs/adr/0001-pharmacy-data-source.md`](docs/adr/0001-pharmacy-data-source.md)
    for why this is a build-time extraction rather than a live API call.
 3. Address search and walking directions are proxied server-side to
-   [OpenRouteService](https://openrouteservice.org/) - the browser never
-   talks to ORS directly, and the directions endpoint only ever routes to a
-   pharmacy from the app's own dataset, never an arbitrary caller-supplied
-   destination. See
+   [OpenRouteService](https://openrouteservice.org/), falling back to
+   [GraphHopper](https://www.graphhopper.com/) if ORS fails - see
+   [`docs/adr/0003-routing-provider-fallback.md`](docs/adr/0003-routing-provider-fallback.md).
+   The browser never talks to either provider directly, and the directions
+   endpoint only ever routes to a pharmacy from the app's own dataset, never
+   an arbitrary caller-supplied destination. See
    [`docs/adr/0002-routing-and-security.md`](docs/adr/0002-routing-and-security.md)
    for the full security model (CSP, rate limiting, key handling).
 4. The same `/api/pharmacies` endpoint is also what the companion
@@ -39,7 +41,7 @@ walking directions to any of them.
 | Framework  | Next.js 16 (App Router), TypeScript                  |
 | Styling    | Tailwind CSS v4                                      |
 | Data       | Overture Maps (DuckDB extraction), Finland            |
-| Routing    | OpenRouteService (geocoding + walking directions)      |
+| Routing    | OpenRouteService, falls back to GraphHopper             |
 | Map        | Leaflet, OSM raster tiles                             |
 | Tests      | Vitest + React Testing Library                        |
 | CI         | GitHub Actions                                       |
@@ -53,8 +55,8 @@ middleware.ts                 # per-request CSP nonce
 src/
   app/
     api/pharmacies/route.ts   # GET: lat/lon -> nearest pharmacies
-    api/geocode/route.ts      # GET: address text -> coordinates (proxies ORS)
-    api/directions/route.ts   # GET: origin + pharmacyId -> walking route (proxies ORS)
+    api/geocode/route.ts      # GET: address text -> coordinates
+    api/directions/route.ts   # GET: origin + pharmacyId -> walking route
     page.tsx                  # single-page UI
   components/
     PharmacyFinder.tsx         # orchestrates location picking -> search -> directions
@@ -69,20 +71,26 @@ src/
   lib/
     pharmacies.ts                # dedup clustering, nearest-N search
     geo.ts                       # haversine distance
-    ors.ts                       # server-only OpenRouteService client
-    rateLimit.ts                 # per-IP rate limiting for the ORS-backed routes
+    routing.ts                   # tries ORS, falls back to GraphHopper
+    providers/
+      ors.ts                      # server-only OpenRouteService client
+      graphhopper.ts               # server-only GraphHopper client (fallback)
+    rateLimit.ts                 # per-IP rate limiting for the routing-backed routes
   data/
     pharmacies.json              # bundled dataset (output of the fetch script)
 docs/adr/
   0001-pharmacy-data-source.md
   0002-routing-and-security.md
+  0003-routing-provider-fallback.md
 ```
 
 ## Running locally
 
 ```bash
 npm install
-cp .env.example .env.local   # add a free ORS key: https://account.heigit.org
+cp .env.example .env.local
+# add a free ORS key:         https://account.heigit.org
+# add a free GraphHopper key: https://www.graphhopper.com (used only as a fallback)
 npm run dev                  # http://localhost:3000
 ```
 
@@ -104,7 +112,8 @@ npm run build
 
 Tests cover the behavior that matters: duplicate-record deduplication,
 that the nearest-N search never comes back empty just because nothing is
-close by, the pharmacy/geocode/directions routes' success/empty/error
+close by, that the routing fallback actually falls back when the primary
+provider fails, the pharmacy/geocode/directions routes' success/empty/error
 responses (including that directions always looks up the destination
 server-side rather than trusting the client), rate limiting, and the UI's
 location-picking, search, and directions states.
@@ -114,10 +123,11 @@ location-picking, search, and directions states.
 - Coverage is Finland only, and frozen at whenever
   `scripts/fetch_pharmacies.py` was last run — not live. Re-run it to
   refresh.
-- Geocoding and directions depend on OpenRouteService's availability; if
-  it's down, those two features show a clear error while pharmacy search
-  (no live dependency) keeps working. See ADR 0002 for a reliability issue
-  observed on ORS's side during development.
+- Geocoding and directions depend on ORS or GraphHopper being reachable; if
+  both are down, those two features show a clear error while pharmacy
+  search (no live dependency) keeps working. See ADR 0003 for a reliability
+  issue observed on ORS's side (twice) during development, and why
+  GraphHopper exists as a fallback rather than a single point of failure.
 - The in-memory rate limiter is per warm serverless instance, not global -
   documented as best-effort in ADR 0002, same as the earlier caching
   design.

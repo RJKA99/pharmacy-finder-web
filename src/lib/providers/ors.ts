@@ -1,7 +1,7 @@
 // Server-only: never import this from a "use client" component. The API key
 // must never reach the browser bundle - see docs/adr/0002-routing-and-security.md.
 
-import type { GeocodeResult, RouteResult, RouteStep } from "./types";
+import type { GeocodeResult, RouteResult, RouteStep } from "../types";
 
 const ORS_BASE_URL = "https://api.openrouteservice.org";
 const REQUEST_TIMEOUT_MS = 8_000;

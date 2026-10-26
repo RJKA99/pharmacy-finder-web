@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { geocode } from "@/lib/ors";
+import { geocode } from "@/lib/routing";
 import { checkRateLimit } from "@/lib/rateLimit";
 
 // Query text varies per request; never cache this behind a static-looking GET.

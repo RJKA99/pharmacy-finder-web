@@ -7,7 +7,7 @@ const fetchWalkingRoute = vi.fn<
 const findPharmacyById = vi.fn<(id: string) => PharmacyLocation | undefined>();
 const checkRateLimit = vi.fn<(request: Request) => Response | null>();
 
-vi.mock("@/lib/ors", () => ({ fetchWalkingRoute }));
+vi.mock("@/lib/routing", () => ({ fetchWalkingRoute }));
 vi.mock("@/lib/pharmacies", () => ({ findPharmacyById }));
 vi.mock("@/lib/rateLimit", () => ({ checkRateLimit }));
 
@@ -86,7 +86,7 @@ describe("GET /api/directions", () => {
 
   it("returns 502 when the routing API fails", async () => {
     findPharmacyById.mockReturnValue(PHARMACY);
-    fetchWalkingRoute.mockRejectedValue(new Error("ORS down"));
+    fetchWalkingRoute.mockRejectedValue(new Error("all providers down"));
     const { GET } = await import("../route");
 
     const response = await GET(
