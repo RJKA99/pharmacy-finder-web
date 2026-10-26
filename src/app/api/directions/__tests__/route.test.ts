@@ -95,6 +95,21 @@ describe("GET /api/directions", () => {
     expect(response.status).toBe(502);
   });
 
+  it("returns 400 without calling the routing API when the pharmacy is over 100km away", async () => {
+    findPharmacyById.mockReturnValue({ ...PHARMACY, lat: 65.0, lon: 25.5 }); // Oulu area
+    const { GET } = await import("../route");
+
+    // Origin: Helsinki - genuinely ~550km from the mocked pharmacy.
+    const response = await GET(
+      new Request("http://localhost/api/directions?lat=60.1699&lon=24.9384&pharmacyId=overture:1"),
+    );
+    const body = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(body.error).toMatch(/too far away/i);
+    expect(fetchWalkingRoute).not.toHaveBeenCalled();
+  });
+
   it("returns 429 when rate limited", async () => {
     checkRateLimit.mockReturnValue(new Response(null, { status: 429 }));
     const { GET } = await import("../route");
