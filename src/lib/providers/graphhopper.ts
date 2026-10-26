@@ -31,10 +31,19 @@ interface GraphHopperGeocodeResponse {
   hits: GraphHopperHit[];
 }
 
+// Multiple venues (a pharmacy, a hotel, a bar...) can share the same street
+// address, so the address alone isn't enough to tell results apart in a
+// search dropdown - lead with the place name whenever it adds information
+// the address doesn't already have.
 function buildLabel(hit: GraphHopperHit): string {
   const streetLine = [hit.street, hit.housenumber].filter(Boolean).join(" ");
-  const parts = [streetLine || hit.name, hit.postcode, hit.city, hit.country].filter(Boolean);
-  return parts.join(", ");
+  const cityLine = [hit.postcode, hit.city].filter(Boolean).join(" ");
+  const addressLabel = [streetLine, cityLine, hit.country].filter(Boolean).join(", ");
+
+  if (hit.name && !addressLabel.includes(hit.name)) {
+    return addressLabel ? `${hit.name}, ${addressLabel}` : hit.name;
+  }
+  return addressLabel || hit.name;
 }
 
 /** Forward-geocodes a free-text address/place query to coordinates. */

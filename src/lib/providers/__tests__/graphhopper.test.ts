@@ -38,8 +38,66 @@ describe("GraphHopper provider", () => {
     const results = await geocode("Mannerheimintie 5");
 
     expect(results).toEqual([
-      { label: "Mannerheimintie 5, 00100, Helsinki, Finland", lat: 60.17, lon: 24.94 },
+      { label: "Mannerheimintie 5, 00100 Helsinki, Finland", lat: 60.17, lon: 24.94 },
     ]);
+  });
+
+  it("leads with the venue name when several results share one address", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          hits: [
+            {
+              name: "Yliopiston apteekki",
+              street: "Mannerheimintie",
+              housenumber: "5",
+              postcode: "00100",
+              city: "Helsinki",
+              country: "Suomi",
+              point: { lat: 60.1696, lng: 24.9395 },
+            },
+            {
+              name: "Hotelli NH Collection Helsinki Grand Hansa",
+              street: "Mannerheimintie",
+              housenumber: "5",
+              postcode: "00100",
+              city: "Helsinki",
+              country: "Suomi",
+              point: { lat: 60.1693, lng: 24.9402 },
+            },
+          ],
+        }),
+      }),
+    );
+
+    const { geocode } = await import("../graphhopper");
+    const results = await geocode("Mannerheimintie 5");
+
+    expect(results.map((r) => r.label)).toEqual([
+      "Yliopiston apteekki, Mannerheimintie 5, 00100 Helsinki, Suomi",
+      "Hotelli NH Collection Helsinki Grand Hansa, Mannerheimintie 5, 00100 Helsinki, Suomi",
+    ]);
+  });
+
+  it("doesn't duplicate the name when it already matches the address (e.g. a plain city search)", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          hits: [
+            { name: "Helsinki", city: "Helsinki", country: "Suomi", point: { lat: 60.17, lng: 24.94 } },
+          ],
+        }),
+      }),
+    );
+
+    const { geocode } = await import("../graphhopper");
+    const results = await geocode("Helsinki");
+
+    expect(results[0].label).toBe("Helsinki, Suomi");
   });
 
   it("parses a route response, converting [lon, lat] points to [lat, lon] and ms to seconds", async () => {
