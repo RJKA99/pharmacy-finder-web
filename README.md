@@ -27,7 +27,10 @@ arrive.
 3. Each pharmacy's opening hours (from a separate one-time OSM extract, see
    [`docs/adr/0004-opening-hours-and-travel-modes.md`](docs/adr/0004-opening-hours-and-travel-modes.md))
    are checked server-side against the current time to show "Open now" /
-   "Closed now" / "Hours unknown".
+   "Closed now" / "Hours unknown". That same OSM extract is also used to
+   validate that an Overture record is actually a pharmacy, not just
+   tagged as one - see
+   [`docs/adr/0005-pharmacy-category-filtering.md`](docs/adr/0005-pharmacy-category-filtering.md).
 4. Address search and directions are proxied server-side to
    [OpenRouteService](https://openrouteservice.org/), falling back to
    [GraphHopper](https://www.graphhopper.com/) if ORS fails - see
@@ -61,8 +64,8 @@ arrive.
 
 ```
 scripts/
-  fetch_pharmacies.py          # one-time/occasional Overture -> JSON extraction
-  add_opening_hours.py         # one-time/occasional OSM opening_hours merge
+  fetch_pharmacies.py              # one-time/occasional Overture -> JSON extraction
+  refine_pharmacies_with_osm.py    # one-time/occasional: OSM opening_hours merge + category validation
 middleware.ts                 # per-request CSP nonce
 src/
   app/
@@ -96,6 +99,7 @@ docs/adr/
   0002-routing-and-security.md
   0003-routing-provider-fallback.md
   0004-opening-hours-and-travel-modes.md
+  0005-pharmacy-category-filtering.md
 ```
 
 ## Running locally
@@ -115,7 +119,7 @@ pip install -r scripts/requirements.txt
 python3 scripts/fetch_pharmacies.py          # writes src/data/pharmacies.json (Overture)
 
 curl -LO https://download.geofabrik.de/europe/finland-latest.osm.pbf
-python3 scripts/add_opening_hours.py finland-latest.osm.pbf   # adds openingHours
+python3 scripts/refine_pharmacies_with_osm.py finland-latest.osm.pbf   # adds openingHours + drops non-pharmacies
 ```
 
 ## Testing
@@ -142,8 +146,13 @@ the UI's location-picking, search, directions, and open/closed states.
 - Coverage is Finland only, and frozen at whenever the fetch scripts were
   last run — not live. Re-run them to refresh.
 - Opening hours are matched from OSM by proximity and are only as complete
-  as OSM's own tagging (522 of 971 raw records have them); the rest show as
+  as OSM's own tagging (521 of 893 records have them); the rest show as
   "Hours unknown" rather than a guess.
+- Pharmacy records themselves are validated against OSM too (see ADR 0005):
+  78 of the original 971 raw Overture records were dropped as
+  miscategorized (e.g. "Herbalife Jakelija", a forest-land co-ownership
+  entity) - an intentionally conservative filter that keeps a borderline
+  case over risking a real pharmacy.
 - Geocoding and directions depend on ORS or GraphHopper being reachable; if
   both are down, those two features show a clear error while pharmacy
   search (no live dependency) keeps working. See ADR 0003 for a reliability

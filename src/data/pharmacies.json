@@ -126,15 +126,6 @@
     "openingHours": "Mo-Fr 08:30-20:00; Sa 09:00-17:00"
   },
   {
-    "id": "overture:cf90f39f-b9e6-4fac-aa43-bd19edd389d5",
-    "name": "Herbalife Jakelija",
-    "lat": 60.1803806,
-    "lon": 24.6732438,
-    "address": "Kaskipuunkaari 1, 02340, ESPOO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:f431805f-ad66-4bd9-bac0-f4a4b01ba22a",
     "name": "Lasihytin apteekki",
     "lat": 60.18554996,
@@ -203,15 +194,6 @@
     "lat": 60.14167914697646,
     "lon": 24.66880204570159,
     "address": "Yläkartanontie 28, Espoo",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:dea0fc81-d8b4-4873-9287-1a835244faec",
-    "name": "Lindholm Pharma Consulting",
-    "lat": 60.1125259,
-    "lon": 24.5450523,
-    "address": "Norrbackantie 46, 02420, JORVAS",
     "source": "overture",
     "openingHours": null
   },
@@ -297,24 +279,6 @@
     "openingHours": "Mo-Fr 08:30-21:00; Sa 09:00-19:00; Su 11:00-18:00"
   },
   {
-    "id": "overture:4617459e-d89a-4759-aa03-2ae4d3935386",
-    "name": "Naprapaatti Mikko Toivanen",
-    "lat": 60.1645455,
-    "lon": 24.736241,
-    "address": "Piispanportti 10, 02200, ESPOO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:606fd606-7f11-4ea5-90eb-3a97757bb3ad",
-    "name": "Tekkovery Medical",
-    "lat": 60.1561718,
-    "lon": 24.7661032,
-    "address": "Iirislahdentie 40, 02230, ESPOO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:8bf1d8d6-c179-43e3-90c4-5cf177d5f12e",
     "name": "Haukilahden Hoivapalvelu Oy",
     "lat": 60.1629824,
@@ -356,15 +320,6 @@
     "lat": 60.1634256,
     "lon": 24.9064454,
     "address": "Itämerenkatu 21, 00180, HELSINKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:15a21cb9-6042-4010-8308-23d804ae7e18",
-    "name": "Vireys",
-    "lat": 60.16396,
-    "lon": 24.91977,
-    "address": "Itämerenkatu 3, 00180, Helsinki",
     "source": "overture",
     "openingHours": null
   },
@@ -540,24 +495,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:210ddda2-0e99-4e94-8bfa-4552de1360db",
-    "name": "Sandoz Allergiatuotteet",
-    "lat": 60.1876797,
-    "lon": 24.8068189,
-    "address": "Metsänneidonkuja 10, 02130, Espoo",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:785dd2cd-1d31-4b93-87f4-2e9f5092c63b",
-    "name": "Optomeditech Oy",
-    "lat": 60.1883042,
-    "lon": 24.8065607,
-    "address": "Metsäneidonkuja 8 8, 02130, Espoo",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:d28be86b-70c8-467d-aff3-ad52be86364f",
     "name": "Grankulla Apotek",
     "lat": 60.2103774,
@@ -574,15 +511,6 @@
     "address": "Professorintie 2, 00330, Helsinki",
     "source": "overture",
     "openingHours": "Mo-Fr 08:00-18:00; Sa 09:00-15:00"
-  },
-  {
-    "id": "overture:b200a7a0-fb2d-4c2a-b365-ae22f8c8cb76",
-    "name": "BEMER Finland",
-    "lat": 60.209737,
-    "lon": 24.825383,
-    "address": "Itsehallintokuja 4, 02600, Espoo",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:c535651f-d947-47dd-9d92-d381122bbaf1",
@@ -657,15 +585,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:43fd10ae-199c-4a14-afdb-0222135ccf89",
-    "name": "Medicubex Hq",
-    "lat": 60.189088,
-    "lon": 24.9070201,
-    "address": "Haartmansgatan 4 Building 14, 00290",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:6c436430-9978-434a-8b57-0e136a535099",
     "name": "Otaniemen Sivuapteekki",
     "lat": 60.1846896,
@@ -673,24 +592,6 @@
     "address": "Otaniementie 12, 02150, ESPOO",
     "source": "overture",
     "openingHours": "Mo-Fr 10:00-20:00; Sa 10:00-18:00"
-  },
-  {
-    "id": "overture:0c8d853a-585c-4458-ac87-1581f1f99ddf",
-    "name": "ConvaTec Suomi Avanne",
-    "lat": 60.17843456,
-    "lon": 24.8331348,
-    "address": "Karhumäentie 3, 01530, Vantaa",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:1b285e93-e495-40ee-874c-dcb8a3950bc1",
-    "name": "Ferring Lääkkeet Oy",
-    "lat": 60.178646,
-    "lon": 24.834232,
-    "address": "Bertel Jungin aukio 5, 02600, Espoo",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:de5476db-2f87-4d57-9906-35af5a27853f",
@@ -725,15 +626,6 @@
     "lat": 60.16997170709388,
     "lon": 24.931987076997757,
     "address": "Graniittitalo, 2. krs, 00100, Helsinki",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:ecf66af8-067c-4292-bcaf-e2aaf022cb2c",
-    "name": "Life",
-    "lat": 60.1692270539354,
-    "lon": 24.9332045722908,
-    "address": "Urho Kekkosenkatu 1 A 15, 00100, Helsinki",
     "source": "overture",
     "openingHours": null
   },
@@ -789,7 +681,7 @@
     "lon": 24.9412712446747,
     "address": "Kaivokatu 8, 00100, Helsinki",
     "source": "overture",
-    "openingHours": "Mo-Fr 08:00-19:00; Sa 10:00-17:00; Su off"
+    "openingHours": null
   },
   {
     "id": "overture:916aeb80-adb8-46d0-9f5b-e31d53ae854e",
@@ -824,15 +716,6 @@
     "lat": 60.1780604,
     "lon": 24.9493504,
     "address": "Siltasaarenkatu 10, 00530, HELSINKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:ef10abd8-e1b8-4ed4-9a92-414d6f1dced2",
-    "name": "ميگوين ئؤيل تةق تةق",
-    "lat": 60.179379444983276,
-    "lon": 24.953191297966598,
-    "address": "Helsinki Finland , Helsinki, Helsinki",
     "source": "overture",
     "openingHours": null
   },
@@ -954,15 +837,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:0a5ae301-ec48-4c53-b44a-3c42cb718aec",
-    "name": "Apuvälinetekniikka Avt",
-    "lat": 60.1948956,
-    "lon": 24.9449084,
-    "address": "Teollisuuskatu 3b, 00510, HELSINKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:9eff4669-4674-4cff-af9d-979e2a0b10ca",
     "name": "Herttoniemen apteekki",
     "lat": 60.19523541,
@@ -997,15 +871,6 @@
     "address": "Tyynylaavantie 5, 00980, Helsinki",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-21:00; Sa 10:00-18:00; Su 12:00-18:00"
-  },
-  {
-    "id": "overture:88d991d0-c8f9-44e6-8c54-f3d11c80fdef",
-    "name": "Fysiospot",
-    "lat": 60.208386,
-    "lon": 24.967021,
-    "address": "Väinö Auerin katu 4, 00560, HELSINKI",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:d7e704d9-19e4-4810-b860-dc5d07d43073",
@@ -1067,15 +932,6 @@
     "lat": 60.56977569,
     "lon": 22.09871303,
     "address": "Kauppatie 5, 21250, Masku",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:4e217004-d0d6-45ec-8cdd-87634e6e0a64",
-    "name": "Suomen Diabeteskauppa",
-    "lat": 60.57647,
-    "lon": 21.98196,
-    "address": "Kaitaistentie 10b, 21230, Masku",
     "source": "overture",
     "openingHours": null
   },
@@ -1193,15 +1049,6 @@
     "lat": 60.45720906,
     "lon": 22.23606931,
     "address": "Pitkämäenkatu 4, 20250, Turku",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:2150fed0-05d8-40f6-9f34-2a589d353c92",
-    "name": "Naprapaatti Valtteri Tammi",
-    "lat": 60.4577284,
-    "lon": 22.2373909,
-    "address": "Pitkämäenkatu 11, 20250, Turku",
     "source": "overture",
     "openingHours": null
   },
@@ -1521,15 +1368,6 @@
     "openingHours": "Mo-Fr 10:00-18:00"
   },
   {
-    "id": "overture:5bda9ce5-4d23-4f45-bb77-020e5a2dd620",
-    "name": "Pharma Fellows Oy",
-    "lat": 60.4917947,
-    "lon": 22.4116632,
-    "address": "Kukonharjantie 2, 21410, VANHALINNA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:1fd62708-837c-496a-84de-9e8a19a2c49a",
     "name": "Apteekki Riihikoski, Oripää ja Yläne",
     "lat": 60.72407,
@@ -1593,15 +1431,6 @@
     "openingHours": "Mo-Fr 09:00-19:00; Sa 09:00-15:00; Su off"
   },
   {
-    "id": "overture:7f817ddf-732d-4562-907d-a6055152930b",
-    "name": "Santax Medico Oy",
-    "lat": 60.433924,
-    "lon": 22.7136476,
-    "address": "Lenkkitie 11, 21530, PAIMIO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:4f6a89b8-74d4-4479-91b6-2d5c76ea9b69",
     "name": "Uudenkaupungin 1. Apteekki",
     "lat": 60.7998566,
@@ -1661,15 +1490,6 @@
     "lat": 61.489699,
     "lon": 21.7500693,
     "address": "Tikkulantie 2, 28100, PORI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:4d92386c-e243-4789-be2f-893b4892da07",
-    "name": "Koulutettu Hieroja A. Repo",
-    "lat": 61.4806682,
-    "lon": 21.7962637,
-    "address": "Rautatienpuistokatu 2a, 28130, PORI",
     "source": "overture",
     "openingHours": null
   },
@@ -1800,24 +1620,6 @@
     "openingHours": "Mo-Fr 09:00-20:00; Sa 09:00-17:00; Su 11:00-17:00"
   },
   {
-    "id": "overture:fa5602d5-21fd-4093-8008-9a91a0730145",
-    "name": "SST-Kauppa",
-    "lat": 61.12868894005908,
-    "lon": 21.510147520182066,
-    "address": "Kuninkaankatu 15, 26100, Rauma",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:6b48092e-7d89-407f-b555-cb4ce5c3cd2b",
-    "name": "Suomen Sairaalatukku",
-    "lat": 61.0975048,
-    "lon": 21.5052399,
-    "address": "4, Unajantie, 26840, Rauma",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:22b0193b-f27e-4a25-9e26-7c2dd8f46c8d",
     "name": "Rauman IV Paroalhon Apteekki",
     "lat": 61.12194355,
@@ -1908,15 +1710,6 @@
     "openingHours": "Mo-Fr 09:00-18:00; Sa 09:00-15:00"
   },
   {
-    "id": "overture:74a488cf-3b08-445c-b2b0-ebf888ac5d20",
-    "name": "Jl-kiinteistönhoito 7 Tuhatta",
-    "lat": 61.1103378,
-    "lon": 22.1921282,
-    "address": "Ahventie 9, 27500, KAUTTUA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:c66b33bb-f6d6-44a0-8ae2-0cbbf91922c2",
     "name": "Köyliön Apteekki",
     "lat": 61.1183095,
@@ -1949,15 +1742,6 @@
     "lat": 61.2547245,
     "lon": 22.3492976,
     "address": "Haapionkatu 14, 32800, KOKEMÄKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:a8408f07-0870-4a81-8fe1-d0a8802db491",
-    "name": "Satafarma Oy",
-    "lat": 61.2620729,
-    "lon": 22.3658393,
-    "address": "Pohjolantie 28, 32800, KOKEMÄKI",
     "source": "overture",
     "openingHours": null
   },
@@ -2286,15 +2070,6 @@
     "openingHours": "Mo-Fr 09:00-18:00; Sa 09:00-15:00; PH off"
   },
   {
-    "id": "overture:fad3c1c2-924e-4a58-8f0a-045770278bab",
-    "name": "Health B&m",
-    "lat": 60.3913655,
-    "lon": 23.1719767,
-    "address": "Harjunrinne 10, 24280, SALO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:bab5e327-7d2e-4f06-8b2a-d0d2853fe963",
     "name": "Kuusjoen sivuapteekki",
     "lat": 60.52139085,
@@ -2309,24 +2084,6 @@
     "lat": 60.8033864,
     "lon": 23.2821916,
     "address": "Kurjenmäentie 2, 32100, YPÄJÄ",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:41bf1fce-8311-43c3-9993-a75e0bf45378",
-    "name": "Farma-lääkehelppi",
-    "lat": 60.7805721,
-    "lon": 23.3277615,
-    "address": "Aholantie 55, 32100, Häme",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:d329bd93-1071-4714-b88a-5efa96e1384c",
-    "name": "Milei's",
-    "lat": 60.66077339,
-    "lon": 23.14790091,
-    "address": "Hämeentie 118, 31500, Koski Tl",
     "source": "overture",
     "openingHours": null
   },
@@ -2430,15 +2187,6 @@
     "openingHours": "Mo-Fr 09:00-19:00, Sa 09:00-15:00"
   },
   {
-    "id": "overture:ea27d6b2-95c0-40e2-8001-173af6941af4",
-    "name": "Tiina Ratilainen",
-    "lat": 61.3228497,
-    "lon": 23.7520708,
-    "address": "Harakkalantie 4, 37500, LEMPÄÄLÄ",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:dd337764-4a0a-483b-b3af-abbdedc70fca",
     "name": "Lempaalan Keskus Apteekki",
     "lat": 61.3136415,
@@ -2491,15 +2239,6 @@
     "address": "Valtatie 6, 37800, Akaa",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-18:00; Sa 09:00-15:00"
-  },
-  {
-    "id": "overture:523c4405-8bb2-4e0b-b904-7b99216191a0",
-    "name": "Pharmatuki",
-    "lat": 60.806199,
-    "lon": 23.7859421,
-    "address": "Yhdystie 6, 31300, Tammela",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:860f11f2-1c98-4901-8238-a7d019eec2a5",
@@ -2871,15 +2610,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:e263230b-7135-49a5-b78f-bca3fd45ef35",
-    "name": "Rusmanpharm Oy",
-    "lat": 61.4908286,
-    "lon": 23.7604065,
-    "address": "Ratinankatu 34, 33100, TAMPERE",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:51ccb11c-19ef-46bd-a347-8d3086f5759f",
     "name": "Ensimmäinen apteekki Tampere",
     "lat": 61.4966601,
@@ -2925,24 +2655,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:c560bba8-2068-4282-8a3f-5de613c9560f",
-    "name": "Siberian Witch",
-    "lat": 61.5020211,
-    "lon": 23.7678531,
-    "address": "Aleksanterinkatu, 33100, TAMPERE",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:bc88dd65-fa9f-400c-925b-e7e8df85b16a",
-    "name": "Hamppumaa",
-    "lat": 61.5014758,
-    "lon": 23.767214,
-    "address": "Satakunnankatu 12, 33100, TAMPERE",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:5dfbe623-5190-43e4-a1ff-0ebb27891c48",
     "name": "Tammerkosken Apteekki",
     "lat": 61.4929561,
@@ -2984,15 +2696,6 @@
     "lat": 61.499294,
     "lon": 23.770099,
     "address": "Kyttälänkatu, 33100, Tampere",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:917c16e6-60e0-49db-900b-9b634f6d4f7a",
-    "name": "Respecta Oy",
-    "lat": 61.506506,
-    "lon": 23.812003,
-    "address": "Biokatu 6, 33520, Tampere",
     "source": "overture",
     "openingHours": null
   },
@@ -3096,15 +2799,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:33f1f8b5-fa24-4f2d-ab3f-a6d55e73d970",
-    "name": "PiriPartsi",
-    "lat": 61.473092,
-    "lon": 24.014083,
-    "address": "Kangasala",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:aceaaac1-5c29-4c6e-ab2c-d4169e1d6e6f",
     "name": "Malax Apotek",
     "lat": 62.9464509,
@@ -3159,15 +2853,6 @@
     "openingHours": "Mo-Fr 09:00-17:00"
   },
   {
-    "id": "overture:8076d8f6-ca30-489a-8d36-f8835d84c448",
-    "name": "Kvarngård Pamela Sofia",
-    "lat": 62.1437031,
-    "lon": 21.5763691,
-    "address": "Norrändsvägen 38, 64100, Kristinestad",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:98b7dd56-fc57-4fdf-83a1-aa98d5d98f20",
     "name": "Karijoen Apteekki",
     "lat": 62.3079347,
@@ -3204,15 +2889,6 @@
     "openingHours": "Mo-Fr 08:30-19:00; Sa 09:00-15:00"
   },
   {
-    "id": "overture:9a441f46-5d70-4d11-b660-93ff71206038",
-    "name": "Oy Kristinamedi Ab",
-    "lat": 62.424251,
-    "lon": 22.1791481,
-    "address": "Topeeka 21, 61800, KAUHAJOKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:c5301bac-7118-441f-838d-c0b5f1525c1a",
     "name": "Kauhajoen 1. Apteekki",
     "lat": 62.4328078,
@@ -3231,15 +2907,6 @@
     "openingHours": "Mo-Fr 08:30-17:00; Sa 09:00-14:00"
   },
   {
-    "id": "overture:e164e9f0-5885-4518-b30f-2eb544402b5f",
-    "name": "A-kliniken",
-    "lat": 62.9387176,
-    "lon": 21.5847299,
-    "address": "Pixnentie 3, 66100, MALAX",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:cd3e9edd-2349-4155-b2a0-d924c1169e41",
     "name": "Palosaari Pharmacy",
     "lat": 63.10846205,
@@ -3247,15 +2914,6 @@
     "address": "Palosaarentie 16, 65200, Vaasa",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-18:00; Sa 10:00-14:00"
-  },
-  {
-    "id": "overture:d758ffa2-db21-4871-af40-d1a7dde208e6",
-    "name": "Apuväline Visual Focus",
-    "lat": 63.0915675,
-    "lon": 21.6241679,
-    "address": "Korsholmanpuistikko 23, 65100, VAASA",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:a2e3af72-9b22-4ee3-8b15-96d8be14b3e7",
@@ -3490,15 +3148,6 @@
     "address": "Törnäväntie 20, 60200, SEINÄJOKI",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-19:00, Sa 09:00-15:00"
-  },
-  {
-    "id": "overture:ccc9371d-f248-494b-8010-313cfa111a1b",
-    "name": "Avec-keittiöt",
-    "lat": 62.7897409,
-    "lon": 22.8335637,
-    "address": "Vapaudentie 28-30, 60100, SEINÄJOKI",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:449ada95-27b8-46a8-94ad-d4fe46b9355f",
@@ -3771,15 +3420,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:70711060-5aed-44bc-8691-7b052455c7c9",
-    "name": "HoivaMaija",
-    "lat": 63.4640333,
-    "lon": 24.16726846,
-    "address": "Köyhäjoentie 2, 69510, Halsua",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:fa9ed3e9-a01d-41c7-8a4b-205dc0085dcc",
     "name": "Halsuan Sivuapteekki",
     "lat": 63.4613796,
@@ -3875,15 +3515,6 @@
     "lat": 63.8377098,
     "lon": 23.1411892,
     "address": "Pitkänsillankatu 15, 67100, KOKKOLA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:a13e0e8f-bec8-4d6f-9c16-303f81b79431",
-    "name": "Hopealainen",
-    "lat": 63.8383814,
-    "lon": 23.1448018,
-    "address": "Pitkänsillankatu 1, 67100, KOKKOLA",
     "source": "overture",
     "openingHours": null
   },
@@ -4095,60 +3726,6 @@
     "openingHours": "Mo-Fr 09:00-19:00; Sa 10:00-15:00"
   },
   {
-    "id": "overture:45d675cc-a58d-49fa-9205-09619921a3d7",
-    "name": "Paranova Oy",
-    "lat": 60.2552127,
-    "lon": 24.8185145,
-    "address": "Rajatorpantie 41, 01640, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:b398ad8e-e25d-4afe-947f-bd1649bb5440",
-    "name": "Botniapharma Oy",
-    "lat": 60.2552127,
-    "lon": 24.8185145,
-    "address": "Rajatorpantie 41, 01640, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:5fda63b5-345b-406e-8f9f-9650b23d9321",
-    "name": "Almedical Oy",
-    "lat": 60.2552127,
-    "lon": 24.8185145,
-    "address": "Rajatorpantie 41, 01640, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:1546d527-effb-4072-921c-352affbef642",
-    "name": "B-daddy",
-    "lat": 60.2552127,
-    "lon": 24.8185145,
-    "address": "Rajatorpantie 41, 01640, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:4514cbbc-12c8-440a-bfb2-b9ebac1d00cb",
-    "name": "Flutiform",
-    "lat": 60.2552127,
-    "lon": 24.8185145,
-    "address": "Rajatorpantie 41, 01640, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:3b1994e4-50cd-4b99-b665-9468c0feabeb",
-    "name": "Pharmac Finland Oy",
-    "lat": 60.2557602,
-    "lon": 24.81723084,
-    "address": "Rajatorpantie 41, Koivuvaarankuja 1 G, 01640, Vantaa",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:4a1092f6-8d17-4d01-a3fd-c0604ded2492",
     "name": "Myyrmannin Apteekki",
     "lat": 60.259409,
@@ -4248,15 +3825,6 @@
     "openingHours": "Mo-Fr 08:30-21:00; Sa 10:00-18:00; Su 12:00-18:00"
   },
   {
-    "id": "overture:6edf18a8-25ec-4e79-bcf1-4c23dae83a1d",
-    "name": "Orion Pharma",
-    "lat": 60.219391,
-    "lon": 24.834378,
-    "address": "Kalkkipellontie 2, 02650, Espoo",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:635e85bd-5456-4967-a2e9-846dd666261a",
     "name": "Lassilan Apteekki",
     "lat": 60.2291725,
@@ -4271,24 +3839,6 @@
     "lat": 60.2269964,
     "lon": 24.8939068,
     "address": "Aino Acktén tie 8, 00400, HELSINKI",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:189dc6a0-ac8b-43fc-8497-ac2411873564",
-    "name": "OneMed Finland ",
-    "lat": 60.219722649,
-    "lon": 24.9066805095,
-    "address": "Metsäläntie 20, 00320, Helsinki",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:839add7a-1bbb-49cf-9440-10873a56f553",
-    "name": "Promedical Oy",
-    "lat": 60.2203314,
-    "lon": 24.8753048,
-    "address": "Valimotie 1B, 00380, HELSINKI",
     "source": "overture",
     "openingHours": null
   },
@@ -4392,15 +3942,6 @@
     "openingHours": "Mo-Sa 07:00-22:00; Su 09:00-22:00"
   },
   {
-    "id": "overture:584b78ac-6cd7-4fae-ad63-e4f9a2cc0a24",
-    "name": "Servier Finland Oy",
-    "lat": 60.2952162,
-    "lon": 24.9631315,
-    "address": "Äyritie 22, 01510, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:23c24396-e0b4-4b94-9ee7-2271d9381511",
     "name": "Vantaanportin Apteekki",
     "lat": 60.29119873,
@@ -4466,15 +4007,6 @@
   {
     "id": "overture:2ebb8665-ef39-4397-a846-d246ff311653",
     "name": "Tikkurilan Uusi Apteekki",
-    "lat": 60.2891364,
-    "lon": 25.0292743,
-    "address": "Talvikkitie 37, 01300, VANTAA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:dd6217eb-5c3c-453e-9f5d-9ccfab7df094",
-    "name": "Irenepharma Oy",
     "lat": 60.2891364,
     "lon": 25.0292743,
     "address": "Talvikkitie 37, 01300, VANTAA",
@@ -4851,24 +4383,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:aab48373-11fd-4898-b0f6-48a5eaedd703",
-    "name": "Tilauspiste Cosmedi Oy",
-    "lat": 60.640777,
-    "lon": 24.874521,
-    "address": "Hämeenkatu 66, 05820, Hyvinkää",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:4046e1de-2308-4303-8041-b2227273b9ca",
-    "name": "Virven Hoitohuone Kehon Helmi",
-    "lat": 60.6356555,
-    "lon": 24.8681904,
-    "address": "Hämeenkatu 27-29, 05800, HYVINKÄÄ",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:668cec9b-9afc-4502-8979-8231b203d350",
     "name": "Hyvinkään Ykkösapteekki",
     "lat": 60.63194636,
@@ -4923,15 +4437,6 @@
     "openingHours": "Mo-Fr 09:00-19:00; Sa 09:00-15:00"
   },
   {
-    "id": "overture:3729901f-813a-4e1d-a486-d0a0ca6d37c8",
-    "name": "Convatec Suomi Avanne",
-    "lat": 60.3064061,
-    "lon": 24.9601179,
-    "address": "Karhumäentie 3, 01530, Vantaa",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:aa88934a-d28a-4204-ae19-a40d9377f255",
     "name": "Pharmacy-Apteekki Plus",
     "lat": 60.31796,
@@ -4966,15 +4471,6 @@
     "address": "Leinikkitie 22, 01350, VANTAA",
     "source": "overture",
     "openingHours": "Mo-Fr 08:00-19:00; Sa 09:00-17:00; Su 11:00-15:00"
-  },
-  {
-    "id": "overture:2d702cd0-5cbb-45cc-be34-de0a53366d88",
-    "name": "Minkkinen Medical Oy",
-    "lat": 60.3207233,
-    "lon": 25.0376929,
-    "address": "Kantokuja 11, 01360, VANTAA",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:d440ceba-e0d3-4d85-8e05-b921ac9bd10f",
@@ -5049,15 +4545,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:a29a4411-2189-486f-8f0a-123e5616d288",
-    "name": "Pharm Trade Oy",
-    "lat": 60.3933816,
-    "lon": 25.0913083,
-    "address": "Neulaskuja 5, 04260, KERAVA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:e886e07a-ccbf-47bc-9c82-1cb3b993298f",
     "name": "Koivukylän apteekki",
     "lat": 60.3238598,
@@ -5083,15 +4570,6 @@
     "address": "Kilpakuja 1, 01280, Vantaa",
     "source": "overture",
     "openingHours": "Mo-Fr 08:30-16:30; Sa-Su off"
-  },
-  {
-    "id": "overture:2c6f6ae4-ba06-4c56-b791-20be997b9da3",
-    "name": "Mediterm Oy",
-    "lat": 60.2382443,
-    "lon": 25.1156773,
-    "address": "Ounasvaarantie 1, 00970, HELSINKI",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:c94a4119-2ced-441f-8079-cac5d5ac7dce",
@@ -5146,15 +4624,6 @@
     "address": "Nikonkatu 1, 04200, KERAVA",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-20:00; Sa 10:00-15:00; Su 12:00-16:00"
-  },
-  {
-    "id": "overture:f999aef0-801d-4418-8e2b-facc18a9a6ae",
-    "name": "Life",
-    "lat": 60.4033862699463,
-    "lon": 25.0989677843443,
-    "address": "Kauppakaari 10, 04200, Kerava",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:b79a31df-c77d-453f-bd10-67d6a65b1102",
@@ -5218,15 +4687,6 @@
     "address": "Sälinkääntie 2, 04600, Mäntsälä",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-20:00; Sa 10:00-18:00; Su 12:00-18:00"
-  },
-  {
-    "id": "overture:70e6a365-8d50-4d82-9824-4742042112b3",
-    "name": "Omakuulo",
-    "lat": 60.4443599,
-    "lon": 26.872483,
-    "address": "Kaskenperä 8, 48310, KOTKA",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:520c1ed7-9403-4215-84a0-b9399698fc23",
@@ -5423,15 +4883,6 @@
     "lat": 60.5136469,
     "lon": 26.9326544,
     "address": "Karhulantie 30, 48600, KOTKA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:45c27cb6-6eff-4e5c-9a3d-5cd9d637c36d",
-    "name": "Q Medi Europe Oy",
-    "lat": 60.5166539,
-    "lon": 26.931009,
-    "address": "Sammonaukio 4, 48600, KOTKA",
     "source": "overture",
     "openingHours": null
   },
@@ -5715,15 +5166,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:cf8b8b0f-09bb-4d0d-915c-2aa42c221929",
-    "name": "Pharmacare Nova Oy",
-    "lat": 61.0007752,
-    "lon": 25.5339135,
-    "address": "Keskikankaantie 29, 15860, HOLLOLA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:4e74275e-dd36-40e0-9c3c-c9f7e1988dda",
     "name": "Padasjoen Apteekki",
     "lat": 61.3492007,
@@ -5794,15 +5236,6 @@
     "address": "ABC, 18200, Heinola",
     "source": "overture",
     "openingHours": "Mo-Fr 09:00-18:00; Sa 09:00-17:00; Su 11:00-17:00"
-  },
-  {
-    "id": "overture:9d0e8e29-0895-44a1-8aa6-a3b698ade595",
-    "name": "Terveyttä Tainalta",
-    "lat": 61.3640271,
-    "lon": 26.1576692,
-    "address": "Vierulankuja 13, 19250, Löytäne",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:7e32fe85-1d68-4812-8d63-7f1ecf19f474",
@@ -5949,24 +5382,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:e7c8f2dc-6f8c-445e-a054-a684502a499a",
-    "name": "Pharma-partners Ky",
-    "lat": 60.876037,
-    "lon": 26.7215836,
-    "address": "Kumputie 5, 45200, KOUVOLA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:7c023361-7288-41ae-8804-7f7b88178d7e",
-    "name": "Oma Luontaistuote",
-    "lat": 60.8754599,
-    "lon": 26.7728436,
-    "address": "Tehontie 27, 45200, KOUVOLA",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:3ab78196-3ece-4e61-b99b-3a6c105cce4c",
     "name": "Tornionmäen Apteekki",
     "lat": 60.87536761,
@@ -5983,15 +5398,6 @@
     "address": "Ylämaantie 3016, 54410, Lappeenranta",
     "source": "overture",
     "openingHours": "Mo-We, Fr 09:00-16:00; Th 09:00-17:00"
-  },
-  {
-    "id": "overture:e4203fd4-da9e-4ea9-b5aa-991a45e54e31",
-    "name": "Metsäyhtymä Khan Aira Ja Sofia",
-    "lat": 61.0607811,
-    "lon": 28.1887092,
-    "address": "Ainonkatu 11, 53100, Lappeenranta",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:124c4183-6677-4899-9c19-28a0676b7827",
@@ -6192,15 +5598,6 @@
     "openingHours": "Mo-Fr 09:00-19:00; Sa 09:00-15:00"
   },
   {
-    "id": "overture:87128b7d-2f6d-486f-ac15-7502914b999c",
-    "name": "Savikurki Timo Sakari",
-    "lat": 61.2080614,
-    "lon": 27.7190455,
-    "address": "Orontie 24, 54800, SAVITAIPALE",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:d5df62bc-5043-4b9e-9073-6cee3408ebf0",
     "name": "Savitaipaleen apteekki",
     "lat": 61.19806627,
@@ -6278,15 +5675,6 @@
     "lat": 61.606396371386,
     "lon": 24.609375,
     "address": "Itäkatu 1, 00930, Helsinki",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:b36f8644-cee6-45a0-adb9-438f084ee103",
-    "name": "Osuuskunta Ryppyotsa",
-    "lat": 61.5117988,
-    "lon": 24.8237991,
-    "address": "Kuusisentie 84, 36880, VEHKAJÄRVI",
     "source": "overture",
     "openingHours": null
   },
@@ -6561,15 +5949,6 @@
     "openingHours": "Mo-Fr 09:00-18:00; Sa 10:00-15:00"
   },
   {
-    "id": "overture:b45c9e57-77e7-4a52-b12a-f07ed889e562",
-    "name": "Respecta Jyväskylä - klinikka ja myymälä",
-    "lat": 62.240018,
-    "lon": 25.755683,
-    "address": "Lutakonaukio 7, 40100, Jyväskylä",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:8ab8c935-ffd5-4caf-8078-9cf4d60d6b0a",
     "name": "Yliopiston Apteekki",
     "lat": 62.24555004,
@@ -6840,15 +6219,6 @@
     "openingHours": null
   },
   {
-    "id": "overture:9096aa91-02c5-4c6c-a4b4-0d809a0f37d8",
-    "name": "Hailuodon Lääkekaappi",
-    "lat": 65.0160834,
-    "lon": 24.7388793,
-    "address": "Kaunakaupungintie 1, 90480, HAILUOTO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:13a54e2c-314d-42fa-8b0b-6424e41fba28",
     "name": "Tervolan apteekki",
     "lat": 66.08988529,
@@ -6982,15 +6352,6 @@
     "address": "Kauppakuja 2, 90830, Oulu",
     "source": "overture",
     "openingHours": "Mo-Fr 08:30-19:00; Sa 09:00-16:00"
-  },
-  {
-    "id": "overture:90b6a975-522c-458c-8611-21c9d6730014",
-    "name": "4beautylife",
-    "lat": 65.1736784,
-    "lon": 25.3583057,
-    "address": "Tornitie 3, 90830, HAUKIPUDAS",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:83de3bed-a7c4-4305-a986-119b0f5469ed",
@@ -7160,15 +6521,6 @@
     "lat": 64.95692589,
     "lon": 25.52630387,
     "address": "Kaakkurin Citymarket, Metsokankaantie 5, 90420, Oulu",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:69323086-9db0-4800-8c50-24809e8c24a5",
-    "name": "Pedihealth Oy",
-    "lat": 64.99915104,
-    "lon": 25.53279908,
-    "address": "Svaanintie 4A, 90230, Oulu",
     "source": "overture",
     "openingHours": null
   },
@@ -7351,15 +6703,6 @@
     "address": "Mäyrätie 1, 19410, KUORTTI",
     "source": "overture",
     "openingHours": "Mo-Fr 10:00-20:00; Sa 09:00-15:00; Su 11:00-15:00"
-  },
-  {
-    "id": "overture:e7d72cd4-ca9f-41a3-87c5-9a548fad930d",
-    "name": "Farma-otso Oy",
-    "lat": 61.4199573,
-    "lon": 26.9227473,
-    "address": "Hepoharjuntie 12, 52700, MÄNTYHARJU",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:d1243359-4646-4877-be2a-75b55e8eacba",
@@ -7830,15 +7173,6 @@
     "openingHours": "Mo-Fr 09:00-18:00; Sa 09:00-14:00"
   },
   {
-    "id": "overture:d09645da-32b2-448c-931a-a2030f41deaf",
-    "name": "Carecare Oy",
-    "lat": 62.59563,
-    "lon": 29.7529136,
-    "address": "Kirkkokatu 1, 80110, JOENSUU",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:34f428c3-d804-449d-9ec5-958a3f8d2b84",
     "name": "Joensuun Keskusapteekki",
     "lat": 62.602965694374376,
@@ -8190,15 +7524,6 @@
     "openingHours": "Mo-Fr 09:00-16:30"
   },
   {
-    "id": "overture:a7e2dabb-935e-4391-a0bb-ffd140b79a31",
-    "name": "Pohjoisesta Luonnosta Oy",
-    "lat": 67.0132303,
-    "lon": 27.5656492,
-    "address": "Kemijärventie 1171, 98500, Pelkosenniemi",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:2f0130cd-a4ce-4254-99f4-87336b22a025",
     "name": "Apteekki Kemijärvi",
     "lat": 66.715691,
@@ -8298,15 +7623,6 @@
     "openingHours": "Mo-Fr 09:00-20:00; Sa 09:00-18:00; Su 11:00-17:00"
   },
   {
-    "id": "overture:31bfb424-1db4-4be5-94b7-8047b175f460",
-    "name": "Peura Pekka Sakari",
-    "lat": 62.9032563,
-    "lon": 27.6297975,
-    "address": "Retkeilijäntie 14, 70200, KUOPIO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
     "id": "overture:79b095dc-75e5-4b46-bd61-b5f81e94f4b3",
     "name": "Niirala Pharmacy",
     "lat": 62.88736315,
@@ -8386,15 +7702,6 @@
     "address": "Puijonkatu 23, 70100, KUOPIO",
     "source": "overture",
     "openingHours": "Mo-Su 08:00-22:00"
-  },
-  {
-    "id": "overture:42d30011-a744-42da-b391-b2604fff4276",
-    "name": "Farmanautti Oy",
-    "lat": 62.8899157,
-    "lon": 27.6806314,
-    "address": "Puijonkatu 9, 70100, KUOPIO",
-    "source": "overture",
-    "openingHours": null
   },
   {
     "id": "overture:015ebfd2-8736-48b1-94cf-863aa75d6bbf",
@@ -8663,15 +7970,6 @@
     "lat": 65.9576595,
     "lon": 29.1586583,
     "address": "Huoparintie 1, 93600, KUUSAMO",
-    "source": "overture",
-    "openingHours": null
-  },
-  {
-    "id": "overture:d8299dd7-7dab-455e-8445-e7de8751c3d7",
-    "name": "Pharma Manninen Oy",
-    "lat": 65.9559143,
-    "lon": 29.2169804,
-    "address": "Haapanantie 1, 93600, KUUSAMO",
     "source": "overture",
     "openingHours": null
   },

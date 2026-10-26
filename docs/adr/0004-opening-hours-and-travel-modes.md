@@ -21,14 +21,15 @@ opening-hours field in the `places` theme at all, even though Overture
 aggregates OSM data that often has one. OSM's own `opening_hours` tag is
 the source of truth here.
 
-`scripts/add_opening_hours.py` extracts it from a local Finland `.osm.pbf`
-extract via `pyosmium` and proximity-matches it into the existing
-`pharmacies.json` by coordinates (within 75m - OSM and Overture don't
-survey the exact same point for the same physical pharmacy). Same
+`scripts/refine_pharmacies_with_osm.py` (originally `add_opening_hours.py` -
+renamed when it took on a second job, see ADR 0005) extracts it from a local
+Finland `.osm.pbf` extract via `pyosmium` and proximity-matches it into the
+existing `pharmacies.json` by coordinates (within 75m - OSM and Overture
+don't survey the exact same point for the same physical pharmacy). Same
 reasoning as the rest of this app's data pipeline: a one-time batch read of
 a downloaded file has no live-availability risk, unlike a per-request call
 to a volunteer-run API (which is exactly what broke twice for routing - see
-ADR 0003). Coverage: 522 of 971 raw pharmacy records matched; the rest show
+ADR 0003). Coverage: 521 of 893 pharmacy records matched; the rest show
 as "hours unknown" rather than guessing.
 
 ## Decision: parsing with `opening_hours.js`, and two bugs that would have
