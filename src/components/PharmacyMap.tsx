@@ -39,10 +39,20 @@ const ACTIVE_PHARMACY_MARKER_STYLE = {
 
 const DIRECTIONS_BUTTON_CLASS = "pharmacy-popup-directions";
 
+function buildOpenStatusHtml(isOpenNow: boolean | null): string {
+  if (isOpenNow === null) {
+    return `<span class="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">Hours unknown</span>`;
+  }
+  return isOpenNow
+    ? `<span class="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Open now</span>`
+    : `<span class="inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Closed now</span>`;
+}
+
 function buildPopupHtml(pharmacy: Pharmacy): string {
   return `
     <div class="text-sm">
       <p class="font-medium text-gray-900">${escapeHtml(pharmacy.name)}</p>
+      <div class="mt-1">${buildOpenStatusHtml(pharmacy.isOpenNow)}</div>
       <button type="button" class="${DIRECTIONS_BUTTON_CLASS} mt-2 rounded-md border border-emerald-600 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-50" data-pharmacy-id="${escapeHtml(pharmacy.id)}">
         Directions
       </button>

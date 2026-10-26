@@ -1,6 +1,26 @@
 import { formatDistance } from "@/lib/format";
 import type { Pharmacy } from "@/lib/types";
 
+function OpenStatusBadge({ isOpenNow }: { isOpenNow: boolean | null }) {
+  if (isOpenNow === null) {
+    return (
+      <span className="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+        Hours unknown
+      </span>
+    );
+  }
+
+  return isOpenNow ? (
+    <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-950 dark:text-green-400">
+      Open now
+    </span>
+  ) : (
+    <span className="inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800 dark:bg-red-950 dark:text-red-400">
+      Closed now
+    </span>
+  );
+}
+
 export function PharmacyList({
   pharmacies,
   onDirections,
@@ -30,7 +50,10 @@ export function PharmacyList({
           }`}
         >
           <div>
-            <p className="font-medium text-gray-900 dark:text-gray-100">{pharmacy.name}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-medium text-gray-900 dark:text-gray-100">{pharmacy.name}</p>
+              <OpenStatusBadge isOpenNow={pharmacy.isOpenNow} />
+            </div>
             {pharmacy.address && (
               <p className="text-sm text-gray-500 dark:text-gray-400">{pharmacy.address}</p>
             )}

@@ -27,7 +27,13 @@ export function PharmacyFinder() {
   const [addressSearchResetKey, setAddressSearchResetKey] = useState(0);
   const { state: searchState, search } = usePharmacySearch();
   const { error: geoError, requestLocation } = useGeolocation();
-  const { state: directionsState, fetchDirections, clear: clearDirections } = useDirections();
+  const {
+    state: directionsState,
+    mode: directionsMode,
+    setMode: setDirectionsMode,
+    fetchDirections,
+    clear: clearDirections,
+  } = useDirections();
 
   const pharmacies: Pharmacy[] =
     searchState.status === "success" ? searchState.result.pharmacies : [];
@@ -93,7 +99,11 @@ export function PharmacyFinder() {
         origin={origin}
         pharmacies={pharmacies}
         activePharmacyId={activePharmacyId}
-        routeCoordinates={directionsState.status === "loaded" ? directionsState.route.coordinates : undefined}
+        routeCoordinates={
+          directionsState.status === "loaded"
+            ? directionsState.directions[directionsMode]?.coordinates
+            : undefined
+        }
         onOriginPick={handleExternalOriginChange}
         onSelectPharmacy={(pharmacyId) => {
           const pharmacy = pharmacies.find((candidate) => candidate.id === pharmacyId);
@@ -104,7 +114,9 @@ export function PharmacyFinder() {
       {directionsState.status === "loaded" && activePharmacy && (
         <DirectionsPanel
           pharmacyName={activePharmacy.name}
-          route={directionsState.route}
+          directions={directionsState.directions}
+          mode={directionsMode}
+          onModeChange={setDirectionsMode}
           onClose={clearDirections}
         />
       )}

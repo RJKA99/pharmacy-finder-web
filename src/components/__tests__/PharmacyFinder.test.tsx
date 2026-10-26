@@ -156,10 +156,15 @@ describe("PharmacyFinder", () => {
       return Promise.resolve({
         ok: true,
         json: async () => ({
-          coordinates: [[60.17, 24.94], [60.171, 24.941]],
-          distanceMeters: 150,
-          durationSeconds: 120,
-          steps: [{ instruction: "Head north", distanceMeters: 150 }],
+          foot: {
+            coordinates: [[60.17, 24.94], [60.171, 24.941]],
+            distanceMeters: 150,
+            durationSeconds: 120,
+            steps: [{ instruction: "Head north", distanceMeters: 150 }],
+            isOpenOnArrival: true,
+          },
+          bike: null,
+          car: null,
         }),
       });
     });
@@ -171,7 +176,7 @@ describe("PharmacyFinder", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /^directions$/i }));
 
-    expect(await screen.findByText(/walking directions to testiapteekki/i)).toBeInTheDocument();
+    expect(await screen.findByText(/directions to testiapteekki/i)).toBeInTheDocument();
     expect(screen.getByText(/head north/i)).toBeInTheDocument();
   });
 
@@ -191,10 +196,15 @@ describe("PharmacyFinder", () => {
       return Promise.resolve({
         ok: true,
         json: async () => ({
-          coordinates: [[60.17, 24.94]],
-          distanceMeters: 150,
-          durationSeconds: 120,
-          steps: [],
+          foot: {
+            coordinates: [[60.17, 24.94]],
+            distanceMeters: 150,
+            durationSeconds: 120,
+            steps: [],
+            isOpenOnArrival: true,
+          },
+          bike: null,
+          car: null,
         }),
       });
     });
@@ -206,7 +216,7 @@ describe("PharmacyFinder", () => {
 
     await userEvent.click(screen.getByRole("button", { name: /simulate map popup directions click/i }));
 
-    expect(await screen.findByText(/walking directions to testiapteekki/i)).toBeInTheDocument();
+    expect(await screen.findByText(/directions to testiapteekki/i)).toBeInTheDocument();
   });
 
   it("passes the active pharmacy id to the map while directions are loading and loaded", async () => {
@@ -236,9 +246,13 @@ describe("PharmacyFinder", () => {
 
     resolveDirections({
       ok: true,
-      json: async () => ({ coordinates: [], distanceMeters: 150, durationSeconds: 120, steps: [] }),
+      json: async () => ({
+        foot: { coordinates: [], distanceMeters: 150, durationSeconds: 120, steps: [], isOpenOnArrival: true },
+        bike: null,
+        car: null,
+      }),
     });
-    await screen.findByText(/walking directions to testiapteekki/i);
+    await screen.findByText(/directions to testiapteekki/i);
     expect(screen.getByTestId("map-active-pharmacy-id")).toHaveTextContent("overture:1");
   });
 

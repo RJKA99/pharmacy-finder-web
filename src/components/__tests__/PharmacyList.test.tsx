@@ -10,6 +10,8 @@ const PHARMACY = {
   lon: 24.94,
   distanceMeters: 1800,
   address: "Testikatu 1, 00100 Helsinki",
+  openingHours: "Mo-Fr 08:00-18:00",
+  isOpenNow: true,
   source: "overture" as const,
 };
 
@@ -68,5 +70,38 @@ describe("PharmacyList", () => {
 
     expect(screen.getByText("Testiapteekki").closest("li")).toHaveClass("bg-emerald-50");
     expect(screen.getByText("Toinen apteekki").closest("li")).not.toHaveClass("bg-emerald-50");
+  });
+
+  it("shows an 'Open now' badge when isOpenNow is true", () => {
+    render(
+      <PharmacyList
+        pharmacies={[{ ...PHARMACY, isOpenNow: true }]}
+        onDirections={vi.fn()}
+        loadingDirectionsId={null}
+      />,
+    );
+    expect(screen.getByText("Open now")).toBeInTheDocument();
+  });
+
+  it("shows a 'Closed now' badge when isOpenNow is false", () => {
+    render(
+      <PharmacyList
+        pharmacies={[{ ...PHARMACY, isOpenNow: false }]}
+        onDirections={vi.fn()}
+        loadingDirectionsId={null}
+      />,
+    );
+    expect(screen.getByText("Closed now")).toBeInTheDocument();
+  });
+
+  it("shows an 'Hours unknown' badge when isOpenNow is null", () => {
+    render(
+      <PharmacyList
+        pharmacies={[{ ...PHARMACY, openingHours: null, isOpenNow: null }]}
+        onDirections={vi.fn()}
+        loadingDirectionsId={null}
+      />,
+    );
+    expect(screen.getByText("Hours unknown")).toBeInTheDocument();
   });
 });
