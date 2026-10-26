@@ -13,10 +13,12 @@ walking directions to any of them.
    map. All three feed into the same search.
 2. The frontend calls this app's own `GET /api/pharmacies?lat=..&lon=..`
    route, which does an in-memory nearest-neighbor search over a bundled
-   dataset of ~900 Finnish pharmacies (`src/data/pharmacies.json`),
-   widening the search radius (1.5km → 5km → 20km) until at least 3 results
-   are found, and returns a distance-sorted list. The dataset is extracted
-   from [Overture Maps](https://overturemaps.org/) by
+   dataset of ~900 Finnish pharmacies (`src/data/pharmacies.json`) and
+   returns the 5 closest, however far away they are - there's no distance
+   cutoff, since Finland's pharmacy coverage is uneven enough that "nearest"
+   can genuinely mean 30+ km in rural areas, and the app should never come
+   back empty just because nothing was within an arbitrary radius. The
+   dataset is extracted from [Overture Maps](https://overturemaps.org/) by
    `scripts/fetch_pharmacies.py` - see
    [`docs/adr/0001-pharmacy-data-source.md`](docs/adr/0001-pharmacy-data-source.md)
    for why this is a build-time extraction rather than a live API call.
@@ -65,7 +67,7 @@ src/
     usePharmacySearch.ts
     useDirections.ts
   lib/
-    pharmacies.ts                # dedup clustering, radius search
+    pharmacies.ts                # dedup clustering, nearest-N search
     geo.ts                       # haversine distance
     ors.ts                       # server-only OpenRouteService client
     rateLimit.ts                 # per-IP rate limiting for the ORS-backed routes
@@ -101,10 +103,11 @@ npm run build
 ```
 
 Tests cover the behavior that matters: duplicate-record deduplication,
-progressive radius widening, the pharmacy/geocode/directions routes'
-success/empty/error responses (including that directions always looks up
-the destination server-side rather than trusting the client), rate
-limiting, and the UI's location-picking, search, and directions states.
+that the nearest-N search never comes back empty just because nothing is
+close by, the pharmacy/geocode/directions routes' success/empty/error
+responses (including that directions always looks up the destination
+server-side rather than trusting the client), rate limiting, and the UI's
+location-picking, search, and directions states.
 
 ## Known limitations
 

@@ -46,23 +46,7 @@ describe("findNearestPharmacies", () => {
     vi.resetModules();
   });
 
-  it("widens the search radius when the nearest radius has too few results", async () => {
-    vi.doMock("@/data/pharmacies.json", () => ({
-      default: [
-        makeLocation({ id: "overture:1", lat: HELSINKI.lat + 0.001, lon: HELSINKI.lon, name: "Close" }),
-        makeLocation({ id: "overture:2", lat: HELSINKI.lat + 0.03, lon: HELSINKI.lon, name: "Far" }),
-        makeLocation({ id: "overture:3", lat: HELSINKI.lat + 0.04, lon: HELSINKI.lon, name: "Far2" }),
-      ],
-    }));
-
-    const { findNearestPharmacies } = await import("../pharmacies");
-    const result = findNearestPharmacies(HELSINKI);
-
-    expect(result.searchRadiusMeters).toBeGreaterThan(1_500);
-    expect(result.pharmacies.length).toBeGreaterThanOrEqual(3);
-  });
-
-  it("returns a distance-sorted list without widening when the first radius is enough", async () => {
+  it("returns a distance-sorted list of the nearest pharmacies", async () => {
     vi.doMock("@/data/pharmacies.json", () => ({
       default: [
         makeLocation({ id: "overture:1", lat: HELSINKI.lat + 0.005, lon: HELSINKI.lon, name: "Mid" }),
@@ -74,11 +58,38 @@ describe("findNearestPharmacies", () => {
     const { findNearestPharmacies } = await import("../pharmacies");
     const result = findNearestPharmacies(HELSINKI);
 
-    expect(result.searchRadiusMeters).toBe(1_500);
     expect(result.pharmacies.map((p) => p.name)).toEqual(["Near", "Mid", "Far"]);
+    expect(result.searchRadiusMeters).toBe(result.pharmacies.at(-1)?.distanceMeters);
   });
 
-  it("returns an empty list rather than throwing when nothing is nearby", async () => {
+  it("never returns an empty list when the dataset has pharmacies, no matter how far away they are", async () => {
+    // ~550km from Helsinki - nothing remotely "nearby", but still a real answer.
+    vi.doMock("@/data/pharmacies.json", () => ({
+      default: [makeLocation({ id: "overture:far", lat: 65.0, lon: 25.5, name: "Far north" })],
+    }));
+
+    const { findNearestPharmacies } = await import("../pharmacies");
+    const result = findNearestPharmacies(HELSINKI);
+
+    expect(result.pharmacies).toHaveLength(1);
+    expect(result.pharmacies[0].name).toBe("Far north");
+    expect(result.pharmacies[0].distanceMeters).toBeGreaterThan(400_000);
+  });
+
+  it("caps the result count even when many pharmacies are nearby", async () => {
+    vi.doMock("@/data/pharmacies.json", () => ({
+      default: Array.from({ length: 20 }, (_, i) =>
+        makeLocation({ id: `overture:${i}`, lat: HELSINKI.lat + i * 0.0001, lon: HELSINKI.lon }),
+      ),
+    }));
+
+    const { findNearestPharmacies } = await import("../pharmacies");
+    const result = findNearestPharmacies(HELSINKI);
+
+    expect(result.pharmacies).toHaveLength(5);
+  });
+
+  it("returns an empty list rather than throwing when the dataset itself is empty", async () => {
     vi.doMock("@/data/pharmacies.json", () => ({ default: [] }));
 
     const { findNearestPharmacies } = await import("../pharmacies");

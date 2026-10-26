@@ -7,9 +7,6 @@ const FALLBACK_NAME = "Apteekki";
 /** Overture (like OSM) re-surveys the same physical pharmacy more than once. */
 const DUPLICATE_CLUSTER_RADIUS_METERS = 25;
 
-/** Widened in order until at least 3 results are found, or the list runs out. */
-const SEARCH_RADII_METERS = [1_500, 5_000, 20_000];
-
 function completenessScore(location: PharmacyLocation): number {
   let score = 0;
   if (location.name !== FALLBACK_NAME) score += 2;
@@ -60,16 +57,6 @@ function withDistance(location: PharmacyLocation, origin: { lat: number; lon: nu
   return { ...location, distanceMeters: Math.round(haversineDistanceMeters(origin, location)) };
 }
 
-function searchAtRadius(
-  origin: { lat: number; lon: number },
-  radiusMeters: number,
-): Pharmacy[] {
-  return getDedupedDataset()
-    .map((location) => withDistance(location, origin))
-    .filter((pharmacy) => pharmacy.distanceMeters <= radiusMeters)
-    .sort((a, b) => a.distanceMeters - b.distanceMeters);
-}
-
 /** Looks up a pharmacy by id in the bundled dataset - used to constrain the
  * directions API to known destinations instead of accepting arbitrary
  * caller-supplied coordinates. */
@@ -77,28 +64,32 @@ export function findPharmacyById(id: string): PharmacyLocation | undefined {
   return getDedupedDataset().find((location) => location.id === id);
 }
 
-const MIN_RESULTS_BEFORE_WIDENING = 3;
+/** How many of the nearest pharmacies to return. */
+const RESULT_COUNT = 5;
 
 /**
  * Finds the nearest pharmacies to a point from the bundled dataset
- * (src/data/pharmacies.json, see scripts/fetch_pharmacies.py), widening the
- * search radius until at least 3 results are found or the radii run out.
+ * (src/data/pharmacies.json, see scripts/fetch_pharmacies.py).
+ *
+ * This always returns the closest pharmacies that exist, however far away
+ * they are - there is no distance cutoff. Finland's pharmacy coverage is
+ * uneven (rural areas can have the nearest one 30km+ away), and "find the
+ * nearest pharmacy" should never come back empty just because nothing was
+ * within an arbitrary radius.
  */
 export function findNearestPharmacies(
   origin: { lat: number; lon: number },
 ): PharmacySearchResult {
-  let pharmacies: Pharmacy[] = [];
-  let radius = SEARCH_RADII_METERS[0];
+  const pharmacies = getDedupedDataset()
+    .map((location) => withDistance(location, origin))
+    .sort((a, b) => a.distanceMeters - b.distanceMeters)
+    .slice(0, RESULT_COUNT);
 
-  for (const candidateRadius of SEARCH_RADII_METERS) {
-    radius = candidateRadius;
-    pharmacies = searchAtRadius(origin, radius);
-    if (pharmacies.length >= MIN_RESULTS_BEFORE_WIDENING) break;
-  }
+  const searchRadiusMeters = pharmacies.at(-1)?.distanceMeters ?? 0;
 
   return {
     pharmacies,
-    searchRadiusMeters: radius,
+    searchRadiusMeters,
     generatedAt: new Date().toISOString(),
   };
 }
