@@ -1,5 +1,6 @@
 import pharmacyDataset from "@/data/pharmacies.json";
 import { haversineDistanceMeters } from "./geo";
+import { isOpenAt } from "./openingHours";
 import type { Pharmacy, PharmacyLocation, PharmacySearchResult } from "./types";
 
 const FALLBACK_NAME = "Apteekki";
@@ -11,6 +12,7 @@ function completenessScore(location: PharmacyLocation): number {
   let score = 0;
   if (location.name !== FALLBACK_NAME) score += 2;
   if (location.address) score += 1;
+  if (location.openingHours) score += 1;
   return score;
 }
 
@@ -54,7 +56,11 @@ function getDedupedDataset(): PharmacyLocation[] {
 }
 
 function withDistance(location: PharmacyLocation, origin: { lat: number; lon: number }): Pharmacy {
-  return { ...location, distanceMeters: Math.round(haversineDistanceMeters(origin, location)) };
+  return {
+    ...location,
+    distanceMeters: Math.round(haversineDistanceMeters(origin, location)),
+    isOpenNow: isOpenAt(location.openingHours, location, new Date()),
+  };
 }
 
 /** Looks up a pharmacy by id in the bundled dataset - used to constrain the

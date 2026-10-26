@@ -11,6 +11,7 @@ function makeLocation(overrides: Partial<PharmacyLocation>): PharmacyLocation {
     lat: 60.17,
     lon: 24.94,
     address: null,
+    openingHours: null,
     source: "overture",
     ...overrides,
   };
@@ -38,6 +39,22 @@ describe("dedupePharmacies", () => {
     const b = makeLocation({ id: "overture:2", lat: 60.18, lon: 24.95, name: "B" });
 
     expect(dedupePharmacies([a, b])).toHaveLength(2);
+  });
+
+  it("prefers a duplicate that has opening hours over one that doesn't", () => {
+    const withoutHours = makeLocation({ id: "overture:1", lat: 60.1700, lon: 24.9384, name: "Same Apteekki" });
+    const withHours = makeLocation({
+      id: "overture:2",
+      lat: 60.17002,
+      lon: 24.93842,
+      name: "Same Apteekki",
+      openingHours: "Mo-Fr 08:00-18:00",
+    });
+
+    const deduped = dedupePharmacies([withoutHours, withHours]);
+
+    expect(deduped).toHaveLength(1);
+    expect(deduped[0].openingHours).toBe("Mo-Fr 08:00-18:00");
   });
 });
 
@@ -87,6 +104,19 @@ describe("findNearestPharmacies", () => {
     const result = findNearestPharmacies(HELSINKI);
 
     expect(result.pharmacies).toHaveLength(5);
+  });
+
+  it("includes isOpenNow for each result, null when hours are unknown", async () => {
+    vi.doMock("@/data/pharmacies.json", () => ({
+      default: [
+        makeLocation({ id: "overture:1", lat: HELSINKI.lat, lon: HELSINKI.lon, openingHours: null }),
+      ],
+    }));
+
+    const { findNearestPharmacies } = await import("../pharmacies");
+    const result = findNearestPharmacies(HELSINKI);
+
+    expect(result.pharmacies[0].isOpenNow).toBeNull();
   });
 
   it("returns an empty list rather than throwing when the dataset itself is empty", async () => {

@@ -18,6 +18,8 @@ const SAMPLE_RESULT: PharmacySearchResult = {
       lon: 24.94,
       distanceMeters: 120,
       address: "Testikatu 1, 00100 Helsinki",
+      openingHours: "Mo-Fr 08:00-18:00",
+      isOpenNow: true,
       source: "overture",
     },
   ],
