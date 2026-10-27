@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { geocode } from "@/lib/routing";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkDailyLimit, checkRateLimit } from "@/lib/rateLimit";
 
 // Query text varies per request; never cache this behind a static-looking GET.
 export const dynamic = "force-dynamic";
@@ -11,6 +11,8 @@ const MAX_QUERY_LENGTH = 100;
 export async function GET(request: Request): Promise<Response> {
   const rateLimited = checkRateLimit(request);
   if (rateLimited) return rateLimited;
+  const dailyLimited = checkDailyLimit(request);
+  if (dailyLimited) return dailyLimited;
 
   const { searchParams } = new URL(request.url);
   const query = (searchParams.get("q") ?? "").trim();

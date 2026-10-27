@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-const WINDOW_MS = 60_000;
-const MAX_REQUESTS_PER_WINDOW = 30;
 const PRUNE_THRESHOLD = 10_000;
 
 interface Bucket {
@@ -9,19 +7,10 @@ interface Bucket {
   windowStart: number;
 }
 
-const buckets = new Map<string, Bucket>();
-
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0].trim();
   return "unknown";
-}
-
-function pruneStaleBuckets(now: number): void {
-  if (buckets.size < PRUNE_THRESHOLD) return;
-  for (const [ip, bucket] of buckets) {
-    if (now - bucket.windowStart > WINDOW_MS) buckets.delete(ip);
-  }
 }
 
 /**
@@ -31,27 +20,52 @@ function pruneStaleBuckets(now: number): void {
  * other, so this isn't a hard guarantee - it meaningfully raises the cost
  * of abuse within a warm instance, which is the realistic threat model here.
  *
- * Returns a 429 Response to return immediately, or null to continue.
+ * Returns a function that gives back a 429 Response to return immediately,
+ * or null to continue.
  */
-export function checkRateLimit(request: Request): Response | null {
-  const now = Date.now();
-  pruneStaleBuckets(now);
+function createLimiter(windowMs: number, maxRequests: number, message: string) {
+  const buckets = new Map<string, Bucket>();
 
-  const ip = clientIp(request);
-  const bucket = buckets.get(ip);
+  function pruneStaleBuckets(now: number): void {
+    if (buckets.size < PRUNE_THRESHOLD) return;
+    for (const [ip, bucket] of buckets) {
+      if (now - bucket.windowStart > windowMs) buckets.delete(ip);
+    }
+  }
 
-  if (!bucket || now - bucket.windowStart > WINDOW_MS) {
-    buckets.set(ip, { count: 1, windowStart: now });
+  return function check(request: Request): Response | null {
+    const now = Date.now();
+    pruneStaleBuckets(now);
+
+    const ip = clientIp(request);
+    const bucket = buckets.get(ip);
+
+    if (!bucket || now - bucket.windowStart > windowMs) {
+      buckets.set(ip, { count: 1, windowStart: now });
+      return null;
+    }
+
+    bucket.count += 1;
+    if (bucket.count > maxRequests) {
+      return NextResponse.json({ error: message }, { status: 429 });
+    }
+
     return null;
-  }
-
-  bucket.count += 1;
-  if (bucket.count > MAX_REQUESTS_PER_WINDOW) {
-    return NextResponse.json(
-      { error: "Too many requests. Please slow down and try again shortly." },
-      { status: 429 },
-    );
-  }
-
-  return null;
+  };
 }
+
+export const checkRateLimit = createLimiter(
+  60_000,
+  30,
+  "Too many requests. Please slow down and try again shortly.",
+);
+
+// A coarser daily cap on top of the per-minute burst limiter above - catches
+// an IP that stays just under the per-minute threshold but hammers the
+// endpoint steadily over hours, which would otherwise run up usage against
+// the routing providers' free-tier quota all day undetected.
+export const checkDailyLimit = createLimiter(
+  24 * 60 * 60 * 1000,
+  20,
+  "Daily request limit reached for this address. Please try again tomorrow.",
+);

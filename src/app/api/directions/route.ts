@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { haversineDistanceMeters } from "@/lib/geo";
 import { isOpenAt } from "@/lib/openingHours";
 import { findPharmacyById } from "@/lib/pharmacies";
-import { checkRateLimit } from "@/lib/rateLimit";
+import { checkDailyLimit, checkRateLimit } from "@/lib/rateLimit";
 import { fetchRoute } from "@/lib/routing";
 import type { DirectionsModeResult, DirectionsResult, TravelMode } from "@/lib/types";
 
@@ -44,6 +44,8 @@ async function fetchModeResult(
 export async function GET(request: Request): Promise<Response> {
   const rateLimited = checkRateLimit(request);
   if (rateLimited) return rateLimited;
+  const dailyLimited = checkDailyLimit(request);
+  if (dailyLimited) return dailyLimited;
 
   const { searchParams } = new URL(request.url);
   const lat = parseCoordinate(searchParams.get("lat"), -90, 90);

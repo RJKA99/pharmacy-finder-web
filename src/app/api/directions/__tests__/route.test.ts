@@ -10,13 +10,14 @@ const fetchRoute = vi.fn<
 >();
 const findPharmacyById = vi.fn<(id: string) => PharmacyLocation | undefined>();
 const checkRateLimit = vi.fn<(request: Request) => Response | null>();
+const checkDailyLimit = vi.fn<(request: Request) => Response | null>();
 const isOpenAt = vi.fn<
   (openingHours: string | null, location: { lat: number; lon: number }, at: Date) => boolean | null
 >();
 
 vi.mock("@/lib/routing", () => ({ fetchRoute }));
 vi.mock("@/lib/pharmacies", () => ({ findPharmacyById }));
-vi.mock("@/lib/rateLimit", () => ({ checkRateLimit }));
+vi.mock("@/lib/rateLimit", () => ({ checkRateLimit, checkDailyLimit }));
 vi.mock("@/lib/openingHours", () => ({ isOpenAt }));
 
 const PHARMACY: PharmacyLocation = {
@@ -45,6 +46,8 @@ describe("GET /api/directions", () => {
     findPharmacyById.mockReset();
     checkRateLimit.mockReset();
     checkRateLimit.mockReturnValue(null);
+    checkDailyLimit.mockReset();
+    checkDailyLimit.mockReturnValue(null);
     isOpenAt.mockReset();
     isOpenAt.mockReturnValue(true);
   });
@@ -147,6 +150,17 @@ describe("GET /api/directions", () => {
 
   it("returns 429 when rate limited", async () => {
     checkRateLimit.mockReturnValue(new Response(null, { status: 429 }));
+    const { GET } = await import("../route");
+
+    const response = await GET(
+      new Request("http://localhost/api/directions?lat=60.169&lon=24.938&pharmacyId=overture:1"),
+    );
+    expect(response.status).toBe(429);
+    expect(findPharmacyById).not.toHaveBeenCalled();
+  });
+
+  it("returns 429 when the daily limit is exceeded", async () => {
+    checkDailyLimit.mockReturnValue(new Response(null, { status: 429 }));
     const { GET } = await import("../route");
 
     const response = await GET(

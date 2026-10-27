@@ -3,9 +3,10 @@ import type { GeocodeResult } from "@/lib/types";
 
 const geocode = vi.fn<(query: string) => Promise<GeocodeResult[]>>();
 const checkRateLimit = vi.fn<(request: Request) => Response | null>();
+const checkDailyLimit = vi.fn<(request: Request) => Response | null>();
 
 vi.mock("@/lib/routing", () => ({ geocode }));
-vi.mock("@/lib/rateLimit", () => ({ checkRateLimit }));
+vi.mock("@/lib/rateLimit", () => ({ checkRateLimit, checkDailyLimit }));
 
 describe("GET /api/geocode", () => {
   beforeEach(() => {
@@ -13,6 +14,8 @@ describe("GET /api/geocode", () => {
     geocode.mockReset();
     checkRateLimit.mockReset();
     checkRateLimit.mockReturnValue(null);
+    checkDailyLimit.mockReset();
+    checkDailyLimit.mockReturnValue(null);
   });
 
   it("returns 400 for a query shorter than 2 characters", async () => {
@@ -50,6 +53,15 @@ describe("GET /api/geocode", () => {
 
   it("returns 429 when rate limited, without calling the geocoder", async () => {
     checkRateLimit.mockReturnValue(new Response(null, { status: 429 }));
+    const { GET } = await import("../route");
+
+    const response = await GET(new Request("http://localhost/api/geocode?q=Mannerheimintie"));
+    expect(response.status).toBe(429);
+    expect(geocode).not.toHaveBeenCalled();
+  });
+
+  it("returns 429 when the daily limit is exceeded, without calling the geocoder", async () => {
+    checkDailyLimit.mockReturnValue(new Response(null, { status: 429 }));
     const { GET } = await import("../route");
 
     const response = await GET(new Request("http://localhost/api/geocode?q=Mannerheimintie"));
