@@ -44,8 +44,6 @@ arrive.
    each with a distance/duration and an arrival-time opening-hours check -
    switching between them updates both the panel and the route drawn on the
    map.
-6. The same `/api/pharmacies` endpoint is also what the companion
-   [iOS app](https://github.com/RJKA99/pharmacy-finder-ios) calls.
 
 ## Tech stack
 
